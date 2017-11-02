@@ -1,0 +1,10 @@
+<h2>CMD Generater</h2>
+
+<hr>
+<%=OODPages.each do |command| %>
+    Type of Data (Illumina...)<%= command.text_field :type %><br />
+    Read Type (Single or Paired)<%= command.text_field :read_type %><br />
+    Input Files:<%= command.text_field :input_files %><br />
+    Software directory:<%= command.text_field :software_dir %><br />
+    <%= command.submit %>
+<% end %>
