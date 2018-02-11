@@ -1,21 +1,15 @@
-<center><h2>CMD Generator</h2>
-<p>Complete this form to create a command line trimming executable</p>
-</center>
+<center><h2>Lets make a PBS script!</h2>
+<p>This form will result in a PBS script to trim your data and view FastQC results</p></center>
 
-
-<!--
-<#%= form_for @script do |f| %>
-    <#%= f.label :type %>
-    <#%= f.text_field :type %><br />
-    
-    <#%= f.submit %>
-<#% end %>
--->
 <div id="SCS">
     <strong>Super Computing System </strong><br/>
     Need help? Look <%=link_to("Here.", controller: "pages", action: "help") %>
     <br /><br />
     <form>
+        Job Name: <input type ="text" name="type"><br />
+        Wall Time: <input type ="text" name="wall_time"><br />
+        Memory per Processor: <input type ="text" name="mem"><br />
+        
         Home Directory: <input type ="text" name="dir"><br />
         Software Directory: <input type ="text" name="home_dir"><br />
         Data Directory: <input type ="text" name="home_dir"><br />
@@ -23,5 +17,3 @@
         <br/ ><input type="submit" value ="Submit">
     </form>
 </div>
-
-<div id ="input"

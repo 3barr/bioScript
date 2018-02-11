@@ -1,0 +1,51 @@
+<title>Select Trimming Tool</title>
+
+<center><h2>CMD Generator</h2>
+    <p>Complete this form to create a command line trimming executable</p>
+</center>
+
+<h4>Pick your tool</h4>
+<!br>
+
+<p><strong>BBDuk:</strong> Suggested for higher quality data, for minamalist trimming. Developed 
+by the Department of Energy.
+<br> -Our top suggested tool</p>
+
+<!br>
+<p><strong>Trimmomatic:</strong> Flexible read trimming tool for Illumina NGS data. Developed by the Usadel lab group
+<br>Strong trimmer, default paramaters remove a lot of data
+<br>Popular amongst bioinformaticans</p>
+
+
+<p><strong>FastQC:</strong> Top visualization software for quality control of high throughput sequence data.
+<br>Developed by Babraham Bioinformatics. Available for free on their website. 
+<br>Generates html report files to analyze trimming. </p>
+
+<br>
+
+<form>
+    <input type = "radio" name ="tool" id = "tool" value = "BBDuk" checked> BBDuk
+    <input type = "radio" name ="tool" id = "tool" value = "Trimmomatic"> Trimmomatic <br>
+    
+    <input type = "checkbox" id = "visualization" value = "yes"> Visualization <br>
+    <button onclick ="next()" type = "button"><%= link_to "Next >", forms_download_path %></button>
+</form>
+
+
+<script type = "text/javascript">
+    function next(){
+        var INtool = document.getElementById("tool");
+        var INviz = document.getElementById("visualization");
+        
+        localStorage.setItem("tool", INtool.value);
+        localStorage.setItem("viz", INviz.value);
+        
+        var stored = localStorage.getItem("viz");
+    }
+</script>
+
+
+
+
+
+

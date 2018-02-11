@@ -19,8 +19,31 @@
 !-->
 
 <div>
-    <header>
-        Welcome to BioScript
-        <%= image_tag("BioScriptLogo.png") %>
-    </header>
+        <center><h1>Welcome to BioScript</h1>
+        A website to walk you through the proccess of data trimming and curation.</center>
+        
+        <!--<#%= image_tag("BioScriptLogo.png") %> #does not work because it looks in awesim/pun/dev/ -->
+        
+        <div class="column" float="left">
+            <p><strong>Target Users:</strong> Biological researchers working with next generation sequencing 
+            data who are unfamiliar with the trimming and quality checking process of raw genomic data.</p>
+            <br/>
+            
+            <p><strong>Our Goal:</strong> Provide researchers the ability to generate their own trimming scripts 
+            in either a command line arguments or by a PBS script. BioScript's objective is to provide insight
+            into the best trimming software, how to run trimming commands on high performance computing systems, and how to
+            interpreting those results.</p>
+            <br/>
+
+            <p><strong>Having trouble?</strong> Visit our 'Help' page 
+            <%=link_to("Here", controller: "pages", action: "help") %> for step by step tutorials on how to download software,
+            interperate FastQC reports, and complete the BioScript forms</p>
+            
+            <p><strong>Ready to start?</strong> Jump right into creating a command line argument for trimming
+            <%=link_to("Here.", controller: "forms", action: "tool") %> Or start generating a PBS script 
+            <%=link_to("Here.", controller: "surveys", action: "new") %> </p>
+            
+        </div>
+
+        
 </div>

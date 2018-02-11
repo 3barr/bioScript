@@ -2,6 +2,15 @@
 <html>
 <head>
   <meta charset="UTF-8">
+  
+  <style>
+      .footer{
+          position:absolute;
+          bottom: 0;
+          width: 100%;
+      }
+  </style>
+  
 
   <title>BioScript</title>
   <%= favicon_link_tag nil, href: OodAppkit.public.url.join('favicon.ico') %>
@@ -27,27 +36,33 @@
         </button>
 
         <ul class="navbar-breadcrumbs">
-          <li><%= link_to OodAppkit.dashboard.title, OodAppkit.dashboard.url.to_s %></li>
+          <!--<li><#%= link_to OodAppkit.dashboard.title, OodAppkit.dashboard.url.to_s %></li>-->
           <li><%= link_to "BioScript Home", root_path %></li>
-          <li><%= link_to "About", pages_about_path %></li>
+          <!--<li><#%= link_to "About", pages_about_path %></li>-->
+          <li><%= link_to "Generate CMD", forms_tool_path %></li>
+          <li><%= link_to "Generate PBS", surveys_new_path %></li>
           <li><%= link_to "Help", pages_help_path %></li>
-          <li><%= link_to "CMD", pages_cmd_path %></li>
         </ul>
       </div>
-
-      <!-- Collect the nav links, forms, and other content for toggling -->
+    
+      <!-- Collect the nav links, forms, and other content for toggling 
+      
+      Part of Nav Bar that shows "Owens Cluster" and "Oakley Cluster" 
+      
       <div class="collapse navbar-collapse navbar-responsive-collapse">
         <ul class="nav navbar-nav">
-          <% OODClusters.each do |cluster| %>
-              <li class="<%= "active" if @ganglia.try(:server_id) == cluster.id %>">
-                <%= link_to "#{icon('area-chart')} #{cluster.metadata.title} Cluster".html_safe, cluster_path(cluster.id.to_s) %>
+          <#% OODClusters.each do |cluster| %>
+              <li class="<#%= "active" if @ganglia.try(:server_id) == cluster.id %>">
+                <#%= link_to "#{icon('area-chart')} #{cluster.metadata.title} Cluster".html_safe, cluster_path(cluster.id.to_s) %>
               </li>
-          <% end %>
+           <#%end %>
         </ul>
         <ul class="nav navbar-nav navbar-right">
 
         </ul>
-      </div><!-- /.navbar-collapse -->
+      </div> /.navbar-collapse -->
+      
+      
     </div><!-- /.container-fluid -->
   </nav>
 </header>
@@ -78,17 +93,11 @@
 
 </div><!-- /.container -->
 
-<footer>
+<footer class = "footer">
   <div class="container">
     <hr>
-    <div class="row">
-      <div class="col-md-6 col-sm-6">
-        <p>&copy; Last launched - <%= Date.today.year %></p>
-      </div>
-      <div class="col-md-6 col-sm-6">
-        <p id="app_version" class="pull-right"><%= ENV['APP_VERSION'] %></p>
-      </div>
-    </div>
+        <p class="text-muted"><center>Created By: Erik Barroso, last updated: <%= Date.today.strftime("%B") %>, <%= Date.today.year %>
+          --  comments and suggestions to ebarroso18@wooster.edu </center></p>
   </div>
 </footer>
 

@@ -12,14 +12,20 @@ class PagesController < ApplicationController
         if command.nil?
             render_404
         else
-            render "cmd"
+            render "system_status"
         end
     end
     
-    
     def cmd
+        #@script = Script.new(params[:script].to_sym)
+        #if script.nil?
+         #   render_404
+        #else
+        #    render "cmd"
+        #end
+        
     end
     
-    def create
+    def pbs
     end
 end

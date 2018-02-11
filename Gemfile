@@ -36,5 +36,10 @@ gem 'rails_12factor', group: :production
 gem 'ood_appkit', '~> 1.0'
 gem 'moab', '~> 0.0.0'
 
+gem 'responders'
+
+gem "bootstrap_form", git: "https://github.com/bootstrap-ruby/rails-bootstrap-forms.git",
+    branch: "master"
+
 gem 'font-awesome-sass'
 # gem 'rails_autolink'

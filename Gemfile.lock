@@ -1,3 +1,10 @@
+GIT
+  remote: https://github.com/bootstrap-ruby/rails-bootstrap-forms.git
+  revision: d9a8ebca732a219cb97f55f744d3433d5f5217af
+  branch: master
+  specs:
+    bootstrap_form (4.0.0.dev)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -135,6 +142,9 @@ GEM
     rake (12.0.0)
     rdoc (4.3.0)
     redcarpet (3.4.0)
+    responders (2.4.0)
+      actionpack (>= 4.2.0, < 5.3)
+      railties (>= 4.2.0, < 5.3)
     sass (3.4.23)
     sass-rails (5.0.6)
       railties (>= 4.0.0, < 6)
@@ -166,6 +176,7 @@ PLATFORMS
 DEPENDENCIES
   autoprefixer-rails (~> 6.3)
   bootstrap-sass (~> 3.3)
+  bootstrap_form!
   coffee-rails (~> 4.2)
   dotenv-rails (~> 2.1)
   font-awesome-sass
@@ -175,6 +186,7 @@ DEPENDENCIES
   ood_appkit (~> 1.0)
   rails (~> 4.2.7.1)
   rails_12factor
+  responders
   sass-rails (~> 5.0)
   sdoc
   uglifier (>= 1.3.0)

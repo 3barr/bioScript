@@ -1,0 +1,35 @@
+<center><h2>CMD Generator</h2>
+    <p>Complete this form to create a command line trimming executable</p>
+</center>
+
+<br>
+
+<h4>Super Computing Directory Setup</h4>
+<p>Be sure to double check the entry of each directory</p>
+
+<!-- Insert image of Super computing system for layout reference -->
+<br>
+
+<form>
+    <b>Enter the full path for each directory</b><br>
+    
+    Home Directory:  <input type = "text" id = "HomeDir"><br>
+    Software Directory:  <input type = "text" id = "SoftwareDir"><br>
+    Input Data Directory:  <input type = "text" id = "DataDir"><br>
+    Output Directory:  <input type = "text" id = "OutputDir"><br>
+    <button onclick ="next()" type = "button"><%= link_to "Next >", forms_options_path %></button>
+    
+    <!-- Need to add all the BBDuk specific trimming options and Trimmomatic options -->
+</form>
+
+<script type="text/javascript">
+    //takes variables from form and stores them in localStorage 
+    function next(){
+        
+    }
+    
+</script>
+
+
+
+

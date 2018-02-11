@@ -1,0 +1,38 @@
+<title>Select Trimming Tool</title>
+
+<center><h2>CMD Generator</h2>
+    <p>Complete this form to create a command line trimming executable</p>
+</center>
+
+<br>
+
+<H4>BBDuk Trimming Options</H4>
+<!-- Dynamically changed according to page1 -->
+
+<br>
+
+<form>
+    <b>What type of reads do you have?</b><br>
+    <input type = "radio" name ="reads" id = "readType" value = "Single"> Single End Reads
+    <input type = "radio" name ="reads" id = "readType" value = "Paired"> Paired End Reads<br>
+    
+    Input File 1:  <input type = "text" id = "input1"><button type="button" onclick="add()">+</button><br><br>
+    <button onclick ="next()" type = "button"><%= link_to "Next >", forms_summary_path %></button>
+    
+    <!-- Need to add all the BBDuk specific trimming options and Trimmomatic options -->
+</form>
+
+
+
+<script type = "text/javascript">
+    //function adds another input file area for user to include, extends division of the form
+    function add(){
+        
+    }
+    
+    //function takes and stores variables from form into localStorage
+    function next(){
+    }
+
+
+</script>

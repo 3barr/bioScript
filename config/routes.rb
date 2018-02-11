@@ -2,10 +2,24 @@ Systemstatus::Application.routes.draw do
   root "clusters#index"
 
   resources :clusters, only: [:index, :show]
-  #resources :pages # needed? not needed?
+  resources :forms, only: [:tool, :download, :setup, :options, :summary]
+  resources :surveys, only: [:new, :create, :bbduk_options, :trimmomatic_options]
+  #resources :pages, only: [:script]
   get "pages/about"
   get "pages/help"
   get "pages/cmd"
+  get "pages/pbs"
+  get "forms/tool"
+  get "forms/download"
+  get "forms/options"
+  get "forms/setup"
+  get "forms/summary"
+  
+  
+  get "surveys/new"
+  get "surveys/bbduk_options"
+  #get "surveys/trimmomatic_options"
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

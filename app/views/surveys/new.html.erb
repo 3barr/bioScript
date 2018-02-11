@@ -1,0 +1,132 @@
+<title>Select Trimming Tool</title>
+
+<div id = "tool_selection">
+    <h4>Pick your tool!</h4>
+    
+    <div class="progress">
+        <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+            0%
+        </div>
+    </div>
+    
+    <form>
+        <input type = "radio" name = "tool" id = "tool" value = "BBDuk"> 
+        <strong>BBDuk:</strong> Suggested for higher quality data -- minamalist trimming. Developed by the Department of Energy.
+        
+        <br>
+        <input type = "radio" name = "tool" id = "tool" value = "Trimmomatic">
+        <strong>Trimmomatic:</strong> Flexible read trimming tool for Illumina NGS data. Developed by the Usadel lab group
+         
+        <br>
+
+        <h4>Add a visualization tool?</h4>
+        <input type = "checkbox" id = "visualization" value = "yes">
+        <strong>FastQC:</strong> Top visualization software for quality control of high throughput sequence data.
+        <br>Generate HTML report page for each trimmed file.
+        
+        <br>
+    
+        <button onclick ="show()" type = "button">Next></button>
+        
+        <%= debug @survey %>
+        
+
+    </form>
+    
+</div>    
+
+<div id = "BBDuk_form" style="display:none;">
+    <div class="progress">
+        <div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%;">
+            25%
+        </div>
+    </div>    
+    
+    <h4>BBDuk: Enter some infromation about your super computing system</h4>
+    
+    <%= bootstrap_form_for @survey do |f| %>
+        <%= f.text_field :home_dir, label: "Home Directory:" %>
+        <%= f.text_field :software_dir, label: "Software Directory:"%>
+        <%= f.text_field :input_dir, label: "Input Directory:" %>
+        <%= f.text_field :output_dir, label: "Output Directory:" %>
+        <%= f.submit%>
+    <% end %>
+
+    
+</div>
+
+
+
+<div id = "Trimmomatic_form" style="display:none;">
+    <h4>Trimmomatic: Enter some infromation about your super computing system</h4>
+    
+     <%= bootstrap_form_for @survey do |f| %>
+        <%= f.text_field :home_dir, label: "Home Directory:" %>
+        <%= f.text_field :software_dir, label: "Software Directory:"%>
+        <%= f.text_field :input_dir, label: "Input Directory:" %>
+        <%= f.text_field :output_dir, label: "Output Directory:" %>
+        <%= f.submit%>
+    <% end %>
+
+    
+</div>
+
+
+
+
+
+
+
+
+
+<script type = "text/javascript">
+    
+    function store(){
+        sessionStorage.removeItem("tool"); //allows for tool reselection
+        var radios = document.getElementsByName("tool");
+        var INviz = document.getElementById("visualization");
+
+        //Deals with radio buttons input complexity 
+        for (var i =0, length = radios.length; i < length; i++){
+            if (radios[i].checked){
+                sessionStorage.setItem("tool", radios[i].value);
+        }}
+        
+        sessionStorage.setItem("viz", INviz.value);
+        //might need to removeItem if visualization is not wanted? maybe in edit function
+        
+        var tool = sessionStorage.getItem("tool");
+        var fastQC = sessionStorage.getItem("viz");
+        
+        return [tool, fastQC];
+    }
+    
+    
+    function show(){
+        input = store();
+        var tool = input[0];
+        var fastQC = input[1];
+        
+        var tool_div = document.getElementById("tool_selection");
+        tool_div.style.display = tool_div.style.display == "none" ? "block" : "none";
+        
+        var bbduk_div = document.getElementById("BBDuk_form");
+        var trimmomatic_div = document.getElementById("Trimmomatic_form");
+        
+        
+        if(tool == "BBDuk"){
+            bbduk_div.style.display = bbduk_div.style.display == "none" ? "block" : "none";
+        }
+        else if(tool == "Trimmomatic"){
+            trimmomatic_div.style.display = trimmomatic_div.style.display == "none" ? "block" : "none";
+        }
+        else{
+            alert(tool);
+        }
+    }
+    
+    
+</script>
+    
+    
+    
