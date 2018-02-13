@@ -1,5 +1,8 @@
 class PagesController < ApplicationController
     
+    def index
+    end
+    
     def about
         @hello = "hello from the controller"
     end

@@ -6,7 +6,7 @@ class SurveysController < ApplicationController
     end
     
     def create
-        @survey = Survey.new(submit_params)
+        @survey = Survey.new(params)
         @survey.register
         
         #not valid, always following else case
@@ -25,13 +25,5 @@ class SurveysController < ApplicationController
     
     def trimmomatic_options
     end
-    
-    private
-    
-    def submit_params
-    end
-    
-    
-    
     
 end

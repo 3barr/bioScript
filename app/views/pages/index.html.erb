@@ -1,0 +1,102 @@
+<!--
+Index page of website. Determined in route.rb inside config file
+
+-->
+<style>
+    .jumbotron{
+        background-image: <%=image_tag('triangle-downloads.png') %>;
+    }
+</style>
+
+
+<div class="jumbotron">
+    <div class="container">
+        <h1>Welcome to BioScript</h1>
+        <p>A website to walk you through the process of data trimming and curation.</p>
+        <p>Providing researchers with the ability to generate their own trimming exicutables 
+        in either a command line arguments or a PBS script.</p>
+    </div>
+</div>
+
+<div class="page-content home narrow">
+    <div class="wrap">
+        <div class="row">
+            <center><h3>About BioScript</h3></center>
+            <div class="col-md-4">
+                <center><%= image_tag("targetUsers.png", :size => "120x80")%></center>
+                </br><p><b>Target Users:</b> Biological researchers working with next generation sequencing 
+                data who are unfamiliar with the trimming and quality checking process of raw genomic data.</p>
+            </div><!--end column1 -->
+            
+            <div class="col-md-4">
+                <center><%= image_tag("tools.png", :size => "120x80")%></center>
+                </br><p><b>Trimming Tools:</b> BioScript suggests two trimming tools, <i> BBDuk </i> and
+                <i>Trimmomatic</i>.  Both tools work for wide verarity situations, see our info page for
+                more details on each tool.</p>
+                
+            </div><!--end column2 -->
+            
+            <div class="col-md-4">
+                <center><%= image_tag("visualization.png", :size => "120x80")%></center>
+                </br><p><b>Visualization:</b> BioScript suggests FastQC be used for visualization of the trimmed
+                data.</p>
+            </div><!--end column3 -->
+        </div><!--end row-->
+        
+        <div class="row">
+            <center><h3>BioScript Products</h3></center>
+            <div class="col-md-6">
+                <center><%= image_tag("terminal.png", :size => "120x80")%></center>
+                </br><p>Generate a command line trimming executable.
+                Strengths:
+                Weaknesses:
+                </p>
+            </div><!--end column1 -->
+            
+            <div class="col-md-6">
+                <center><%= image_tag("script.png", :size => "120x80")%></center>
+                </br><p>Generate a PBS script to be submitted via linux.
+                Strengths:
+                Weaknesses:
+                </p>
+            </div><!--end column2 -->
+
+        </div><!--end row-->
+        
+        
+    </div><!--end wrap -->
+</div> <!--End page-contnet-->
+
+
+
+
+
+
+<!--
+<div>
+
+    <center><h1>Welcome to BioScript</h1>
+    A website to walk you through the proccess of data trimming and curation.</center>
+    
+    <!--<#%= image_tag("BioScriptLogo.png") %> #does not work because it looks in awesim/pun/dev/
+    
+    <div class="column" float="left">
+        <p><strong>Target Users:</strong> Biological researchers working with next generation sequencing 
+        data who are unfamiliar with the trimming and quality checking process of raw genomic data.</p>
+        <br/>
+        
+        <p><strong>Our Goal:</strong> We want to provide insight
+        into the best trimming software, how to run trimming commands on high performance computing systems, and how to
+        interpreting those results. </p>
+        <br/>
+
+        <p><strong>Having trouble?</strong> Visit our 'Help' page 
+        <#%=link_to("Here", controller: "pages", action: "help") %> for step by step tutorials on how to download software,
+        interperate FastQC reports, and complete the BioScript forms</p>
+        
+        <p><strong>Ready to start?</strong> Jump right into creating a command line argument for trimming
+        <#%=link_to("Here.", controller: "forms", action: "tool") %> Or start generating a PBS script 
+        <#%=link_to("Here.", controller: "surveys", action: "new") %> </p>
+        
+    </div>
+</div> -->

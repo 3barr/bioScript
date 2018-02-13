@@ -1,14 +1,15 @@
 Systemstatus::Application.routes.draw do
-  root "clusters#index"
+  root "pages#index"
 
-  resources :clusters, only: [:index, :show]
+  #resources :clusters, only: [:index, :show]
   resources :forms, only: [:tool, :download, :setup, :options, :summary]
   resources :surveys, only: [:new, :create, :bbduk_options, :trimmomatic_options]
-  #resources :pages, only: [:script]
+  resources :pages, only: [:index, :script]
   get "pages/about"
   get "pages/help"
   get "pages/cmd"
   get "pages/pbs"
+  get "pages/index"
   get "forms/tool"
   get "forms/download"
   get "forms/options"
