@@ -1,11 +1,23 @@
-<body>
-    <h4>BBDuk Trimming Options</h4>
+<script>
+    var pBar_options = document.getElementById("options");
+    var pBar_select = document.getElementById("select");
+    var pBar_download = document.getElementById("download");
+    var pBar_directory = document.getElementById("directory");
     
-    <div class="progress">
-        <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">
-            50%
-        </div>
-    </div>
+    pBar_options.style.backgroundColor = "#b0b0b0";
+    
+    pBar_select.style.backgroundColor = "#53c322";
+    pBar_download.style.backgroundColor = "#53c322";
+    pBar_directory.style.backgroundColor = "#53c322";
+    
+    
+    
+</script>
+
+<body>
+    <%= @survey.inspect %>
+    
+    <h4>BBDuk Trimming Options</h4>
     
     <div id = "read">
         Single-end or Paired-end Reads? <br>

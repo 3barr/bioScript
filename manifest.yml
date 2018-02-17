@@ -1,6 +1,6 @@
 ---
 name: BioScript
-description: |-
-  System Status of OSC Clusters
+description: Application to assist researchers create NGS trimming scripts or command
+  line arguments
 category: Clusters
 icon: fa://strikethrough

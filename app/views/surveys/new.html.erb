@@ -1,14 +1,17 @@
 <title>Select Trimming Tool</title>
 
+<script>
+    var pBar_select = document.getElementById('select');
+    
+    pBar_select.style.backgroundColor = "#b0b0b0";
+    
+    var pBar_download = document.getElementById('download');
+    
+</script>
+
 <div id = "tool_selection">
     <h4>Pick your tool!</h4>
-    
-    <div class="progress">
-        <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
-            0%
-        </div>
-    </div>
-    
+
     <form>
         <input type = "radio" name = "tool" id = "tool" value = "BBDuk"> 
         <strong>BBDuk:</strong> Suggested for higher quality data -- minamalist trimming. Developed by the Department of Energy.
@@ -36,11 +39,6 @@
 </div>    
 
 <div id = "BBDuk_form" style="display:none;">
-    <div class="progress">
-        <div class="progress-bar" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%;">
-            25%
-        </div>
-    </div>    
     
     <h4>BBDuk: Enter some infromation about your super computing system</h4>
     
@@ -70,12 +68,6 @@
 
     
 </div>
-
-
-
-
-
-
 
 
 
@@ -116,9 +108,14 @@
         
         if(tool == "BBDuk"){
             bbduk_div.style.display = bbduk_div.style.display == "none" ? "block" : "none";
+            pBar_select.style.backgroundColor = "#53c322";
+            pBar_download.style.backgroundColor = "#b0b0b0";
         }
         else if(tool == "Trimmomatic"){
             trimmomatic_div.style.display = trimmomatic_div.style.display == "none" ? "block" : "none";
+            
+            pBar_select.style.backgroundColor = "#53c322";
+            pBar_download.style.backgroundColor = "#b0b0b0";
         }
         else{
             alert(tool);

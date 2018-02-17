@@ -45,6 +45,52 @@
     </nav>
 </header>
 
+<div class="jumbotron" style="display:none"; id = "jumbotron">
+    <div class="container" style="color:white;">
+        <h1>Welcome to BioScript</h1>
+        <p>A website to walk you through the process of data trimming and curation.</p>
+        <p>Providing researchers with the ability to generate their own trimming exicutables 
+        in either a command line arguments or a PBS script.</p>
+    </div>
+</div>
+
+<div id = bar>
+    <center>
+    <h4>BioScript Progress</h4>    
+    <ul id = "progress">
+        <li id = "select">
+            <center>Select Software</center>
+        </li>
+    
+        <span class ="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
+        
+        <li id = "download">
+            <center>Download Software</center>
+        </li>
+        
+        <span class ="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
+        
+        <li id = "directory">
+            <center>Directory Information</center>
+        </li>
+        
+        <span class ="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
+        
+        <li id = "options">
+            <center>Trimming Options</center>
+        </li>
+        
+        <span class ="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
+        
+        <li id = "command">
+            <center>Generate Command</center>
+        </li>
+        
+    </ul></center>
+</div>
+
+
+
 <div class="container" role="main">
 
   <% if alert %>

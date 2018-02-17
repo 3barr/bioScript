@@ -6,7 +6,7 @@ class SurveysController < ApplicationController
     end
     
     def create
-        @survey = Survey.new(params)
+        @survey = Survey.new(params[:survey])
         @survey.register
         
         #not valid, always following else case
