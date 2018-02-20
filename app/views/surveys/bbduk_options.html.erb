@@ -9,13 +9,11 @@
     pBar_select.style.backgroundColor = "#53c322";
     pBar_download.style.backgroundColor = "#53c322";
     pBar_directory.style.backgroundColor = "#53c322";
-    
-    
-    
 </script>
 
 <body>
     <%= @survey.inspect %>
+    <#%= @Boptions.inspect %>
     
     <h4>BBDuk Trimming Options</h4>
     
@@ -25,21 +23,6 @@
             <option value="Single">Single-end</option>
             <option value="Paired">Paired-end</option>
         </select>
-        
-        <!--
-        <div class="btn-group">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-                Read Type <span class ="caret"></span>
-            </button>
-            <ul class="dropdown-menu">
-                <li><a onclick="showDiv('Single')">Single-end</a></li>
-                <li><a onclick="showDiv('Paired')">Paired-end</a></li>
-            </ul>
-        </div>
-        -->
-        
-        
     </div> 
     
     <div id = "single" style="display:block;">
@@ -84,10 +67,16 @@
         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add Operation
     </button>
     
+    <!-- 
+    OPTIONS DIV, values in drop downlist correspond to the div they are adding
+    
+    -->
+    
+    
     <div id = "operation" style="display:none;">
         <select id = "target" onchange="showDiv(this)">
             <option value="">Select Trimming Operation</option>
-            <option value="Kmer">Kmer</option>
+            <option value="qTrim">Quality Trimming</option>
             <option value="SlidingWindow">Sliding Window</option>
         </select>
         
@@ -98,9 +87,30 @@
         
     </div>    
     
-    <div id = "Kmer" style = "display:none;">Hello from KMER</div>
+    
+    <!--
+    Option div for quality trimming score, trying to update the @survey object with
+    the information from the form below, appending :Qscore as a param to survey
+    
+    route matches to call action bbduk_options that then trys to use an update 
+    function on survey
+    
+    Error: NoMethodError in SurveysController#bbduk_options
+    undefined method 'update' for Survey:Class
+    
+    -->
+    
+    
+    <div id = "qTrim" style = "display:none;">
+        <%= bootstrap_form_for @survey, :url => surveys_bbduk_options_path(@survey) do |f| %>
+            <%= f.text_field :Qscore, label: "Min Quality of Score:" %>
+            <%= f.submit "Add Trimming Options" %>
+        <% end %>
         
-        <div id="SlidingWindow" style="display:none;">Hello from sliding window</div>
+    </div>
+    
+    
+    <div id="SlidingWindow" style="display:none;">Hello from sliding window</div>
 
     
 </body>
@@ -118,8 +128,8 @@
 
     function showDiv(elem){
         
-        var kMer_div = document.getElementById('Kmer');
-        var kMer_check = document.getElementById("trueKmer");
+        var qTrim_div = document.getElementById('qTrim');
+        var qTrim_check = document.getElementById("trueQtrim");
         
         var SlidWin_div = document.getElementById('SlidingWindow');
         var SlidWin_check = document.getElementById("trueSlidWin");
@@ -129,14 +139,14 @@
         var paired_div = document.getElementById('paired');
         
         
-        if(elem.value == "Kmer"){
-            if(kMer_check == null){
-                var clone = kMer_div.cloneNode(true);
-                clone.id = "trueKmer";
+        if(elem.value == "qTrim"){
+            if(qTrim_check == null){
+                var clone = qTrim_div.cloneNode(true);
+                clone.id = "trueQtrim";
                 clone.style = "display:block;";
-                elem.parentNode.append(clone);
+                elem.parentNode.appendChild(clone);
             }
-            if(kMer_check != null){
+            if(qTrim_check != null){
                 alert("You've already choosen this option");
             }
         }

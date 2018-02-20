@@ -1,0 +1,103 @@
+<script>
+    var pBar_select = document.getElementById('select');
+    
+    pBar_select.style.backgroundColor = "#b0b0b0";
+    
+    var pBar_download = document.getElementById('download');
+    
+</script>
+
+<div id = "tool_selection">
+    <h4>Pick your tool!</h4>
+
+    <form>
+        <input type = "radio" name = "tool" id = "tool" value = "BBDuk"> 
+        <strong>BBDuk:</strong> Suggested for higher quality data -- minamalist trimming. Developed by the Department of Energy.
+        
+        <br>
+        <input type = "radio" name = "tool" id = "tool" value = "Trimmomatic">
+        <strong>Trimmomatic:</strong> Flexible read trimming tool for Illumina NGS data. Developed by the Usadel lab group
+         
+        <br>
+
+        <h4>Add a visualization tool?</h4>
+        <input type = "checkbox" id = "visualization" value = "yes">
+        <strong>FastQC:</strong> Top visualization software for quality control of high throughput sequence data.
+        <br>Generate HTML report page for each trimmed file.
+        
+        <br>
+    
+        <button onclick ="show()" type = "button">Next></button>
+    </form>
+    
+</div>
+
+<div id = "download_div" style= "display:none;">
+    
+    <!-- page dynamically loads selected software and only shows how to download those programs --> 
+    <H4>Now download BBDuk and FastQC</H4>
+    
+    <p>>Link to the BBDuk software page can be found <a href = "https://jgi.doe.gov/data-and-tools/bbtools/bb-tools-user-guide/bbduk-guide/">Here.</a></p>
+    
+    <br>
+    
+    <p>>Link to the FastQC software page can be found <a href = "https://www.bioinformatics.babraham.ac.uk/projects/fastqc/">Here.</a> </p>
+    
+    <button type="button"><%= link_to "Next >", surveys_new_path %></button>
+    
+</div>
+
+<script type = "text/javascript">
+    
+    function store(){
+        sessionStorage.removeItem("tool"); //allows for tool reselection
+        var radios = document.getElementsByName("tool");
+        var INviz = document.getElementById("visualization");
+
+        //Deals with radio buttons input complexity 
+        for (var i =0, length = radios.length; i < length; i++){
+            if (radios[i].checked){
+                sessionStorage.setItem("tool", radios[i].value);
+        }}
+        
+        sessionStorage.setItem("viz", INviz.value);
+        //might need to removeItem if visualization is not wanted? maybe in edit function
+        
+        var tool = sessionStorage.getItem("tool");
+        var fastQC = sessionStorage.getItem("viz");
+        
+        return [tool, fastQC];
+    }
+    
+    
+    function show(){
+        input = store();
+        var tool = input[0];
+        var fastQC = input[1];
+        
+        var tool_div = document.getElementById("tool_selection");
+        tool_div.style.display = tool_div.style.display == "none" ? "block" : "none";
+        
+        var download_div = document.getElementById("download_div");
+        var trimmomatic_div = document.getElementById("Trimmomatic_form");
+        
+        
+        if((tool == "BBDuk") || (tool == "Trimmomatic")){
+            download_div.style.display = download_div.style.display == "none" ? "block" : "none";
+            
+            pBar_select.style.backgroundColor = "#53c322";
+            pBar_download.style.backgroundColor = "#b0b0b0";
+            
+        }
+        else{
+            alert("Please select a tool");
+        }
+    }
+    
+</script>
+
+
+
+
+
+

@@ -1,99 +1,89 @@
-<body>
-    <h4>Trimmomatic Trimming Options</h4>
+<script>
+    var pBar_options = document.getElementById("options");
+    var pBar_select = document.getElementById("select");
+    var pBar_download = document.getElementById("download");
+    var pBar_directory = document.getElementById("directory");
     
-    <div class="progress">
-        <div class="progress-bar" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">
-            50%
-        </div>
+    pBar_options.style.backgroundColor = "#b0b0b0";
+    
+    pBar_select.style.backgroundColor = "#53c322";
+    pBar_download.style.backgroundColor = "#53c322";
+    pBar_directory.style.backgroundColor = "#53c322";
+    
+</script>
+
+
+
+<h4>Trimmomatic Trimming Options</h4>
+
+<div id = "read">
+    Single-end or Paired-end Reads? <br>
+    <select id = "read_form" onchange="showDiv(this)">
+        <option value="Single">Single-end</option>
+        <option value="Paired">Paired-end</option>
+    </select>
+
+</div> 
+
+<div id = "single" style="display:block;">
+    <button class="btn btn-outline-primary" onclick="showDiv('s_file')">Single file</button>
+    <button class="btn btn-outline-primary" onclick="showDiv('s_files')">Multiple files</button>
+    
+    <div id = "s_file">
+        <br>Single file to trim:<input type ="text" class ="form-control" value="Input File Name">
     </div>
     
-    <div id = "read">
-        Single-end or Paired-end Reads? <br>
-        <select id = "read_form" onchange="showDiv(this)">
-            <option value="Single">Single-end</option>
-            <option value="Paired">Paired-end</option>
-        </select>
-        
-        <!--
-        <div class="btn-group">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-                Read Type <span class ="caret"></span>
-            </button>
-            <ul class="dropdown-menu">
-                <li><a onclick="showDiv('Single')">Single-end</a></li>
-                <li><a onclick="showDiv('Paired')">Paired-end</a></li>
-            </ul>
-        </div>
-        -->
-        
-        
-    </div> 
-    
-    <div id = "single" style="display:block;">
-        <button class="btn btn-outline-primary" onclick="showDiv('s_file')">Single file</button>
-        <button class="btn btn-outline-primary" onclick="showDiv('s_files')">Multiple files</button>
-        
-        <div id = "s_file">
-            <br>Single file to trim:<input type ="text" class ="form-control" value="Input File Name">
-        </div>
-        
-        <div id = "s_files" style="display:none;">
-            <br>Enter multiple file names seperated by a comma:<textarea class = "form-control" rows = "4">Input Multiple file names</textarea>
-        </div>
-        
-        </br>
+    <div id = "s_files" style="display:none;">
+        <br>Enter multiple file names seperated by a comma:<textarea class = "form-control" rows = "4">Input Multiple file names</textarea>
     </div>
     
-    <div id = "paired" style="display:none;">
-        
-        <button class="btn btn-outline-primary" onclick="showDiv('p_file')">One Pair</button>
-        <button class="btn btn-outline-primary" onclick="showDiv('p_files')">Multiple Pairs</button>
-        
-        <div id = "p_file">
-            <br>
-            Read one of single pair:
-            <input type ="text" class ="form-control" value="Input R1-File Name">
-            Read two of single pair:
-            <input type ="text" class ="form-control" value="Input R2-File Name">
-        </div>
-        
-        <div id = "p_files" style="display:none;">
-            Read one of multiple pairs:
-            <textarea class = "form-control" rows = "4">Input Multiple file names separated by a comma</textarea>
-            Read two of multiple pairs:
-            <textarea class = "form-control" rows = "4">Input Multiple file names separated by a comma</textarea>
-        </div>
-    </div>    
+    </br>
+</div>
+
+<div id = "paired" style="display:none;">
+    
+    <button class="btn btn-outline-primary" onclick="showDiv('p_file')">One Pair</button>
+    <button class="btn btn-outline-primary" onclick="showDiv('p_files')">Multiple Pairs</button>
+    
+    <div id = "p_file">
+        <br>
+        Read one of single pair:
+        <input type ="text" class ="form-control" value="Input R1-File Name">
+        Read two of single pair:
+        <input type ="text" class ="form-control" value="Input R2-File Name">
+    </div>
+    
+    <div id = "p_files" style="display:none;">
+        Read one of multiple pairs:
+        <textarea class = "form-control" rows = "4">Input Multiple file names separated by a comma</textarea>
+        Read two of multiple pairs:
+        <textarea class = "form-control" rows = "4">Input Multiple file names separated by a comma</textarea>
+    </div>
+</div>    
 
 
 
-    <button class = "btn" id = "button" onclick="addOperation()">
-        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add Operation
+<button class = "btn" id = "button" onclick="addOperation()">
+    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add Operation
+</button>
+
+<div id = "operation" style="display:none;">
+    <select id = "target" onchange="showDiv(this)">
+        <option value="">Select Trimming Operation</option>
+        <option value="Kmer">Kmer</option>
+        <option value="SlidingWindow">Sliding Window</option>
+    </select>
+    
+    <button class = "btn-sm" id = "trash" onclick="removeOperation(this.parentElement)">
+        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
     </button>
     
-    <div id = "operation" style="display:none;">
-        <select id = "target" onchange="showDiv(this)">
-            <option value="">Select Trimming Operation</option>
-            <option value="Kmer">Kmer</option>
-            <option value="SlidingWindow">Sliding Window</option>
-        </select>
-        
-        <button class = "btn-sm" id = "trash" onclick="removeOperation(this.parentElement)">
-            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-        </button>
-        
-        
-    </div>    
     
-    <div id = "Kmer" style = "display:none;">Hello from KMER</div>
-        
-        <div id="SlidingWindow" style="display:none;">Hello from sliding window</div>
+</div>    
 
+<div id = "Kmer" style = "display:none;">Hello from KMER</div>
     
-</body>
-
-
+    <div id="SlidingWindow" style="display:none;">Hello from sliding window</div>
 
 <script>
 

@@ -3,23 +3,27 @@ Systemstatus::Application.routes.draw do
 
   #resources :clusters, only: [:index, :show]
   resources :forms, only: [:tool, :download, :setup, :options, :summary]
-  resources :surveys, only: [:new, :create, :bbduk_options, :trimmomatic_options]
-  resources :pages, only: [:index, :script]
+  resources :surveys, only: [:new, :create, :bbduk_options, :trimmomatic_options, :update]
+  resources :pages, only: [:index, :script, :selection]
   get "pages/about"
   get "pages/help"
-  get "pages/cmd"
-  get "pages/pbs"
+  get "pages/selection"
   get "pages/index"
-  get "forms/tool"
-  get "forms/download"
-  get "forms/options"
-  get "forms/setup"
-  get "forms/summary"
+  #get "forms/tool"
+  #get "forms/download"
+  #get "forms/options"
+  #get "forms/setup"
+  #get "forms/summary"
   
   
   get "surveys/new"
   get "surveys/bbduk_options"
-  #get "surveys/trimmomatic_options"
+  get "surveys/trimmomatic_options"
+  get "surveys/report"
+  
+  
+  match "/surveys/bbduk_options" => "surveys#bbduk_options", :via => :post, :as => :bbduk_options
+    
 
 
   # The priority is based upon order of creation: first created -> highest priority.

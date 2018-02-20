@@ -5,7 +5,9 @@ class Survey
         :home_dir,
         :software_dir,
         :input_dir,
-        :output_dir
+        :output_dir,
+        :tool,
+        :Qscore
         #:read_type,
         #:input_files,
     )
@@ -20,9 +22,14 @@ class Survey
         end
     end
     
+    def update
+    end
+    
     private
     
     def create_user
     end
     
 end
+
+

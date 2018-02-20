@@ -36,8 +36,8 @@
             
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
-                    <li><%= link_to "Generate CMD", forms_tool_path %></li>
-                    <li><%= link_to "Generate PBS", surveys_new_path %></li>
+                    <li onclick="save_type('CMD')"><%= link_to "Generate CMD", pages_selection_path %></li>
+                    <li onclick="save_type('PBS')"><%= link_to "Generate PBS", pages_selection_path %></li>
                     <li><%= link_to "Help", pages_help_path %></li>
                 </ul>
             </div>
@@ -127,3 +127,18 @@
 
 </body>
 </html>
+
+<script>
+
+
+    /*
+    Function called on click of nav bar, saves product type (PBS or CMD) 
+    depending on which section is clicked for navigation
+    */
+    function save_type(product){
+        sessionStorage.setItem("product", product);
+    }
+    
+</script>
+
+

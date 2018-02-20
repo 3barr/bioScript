@@ -3,54 +3,30 @@
 <script>
     var pBar_select = document.getElementById('select');
     
-    pBar_select.style.backgroundColor = "#b0b0b0";
+    pBar_select.style.backgroundColor = "#53c322";
     
     var pBar_download = document.getElementById('download');
     
+    pBar_download.style.backgroundColor = "#53c322";
+    
+    var pBar_directory = document.getElementById('directory');
+    
+    pBar_directory.style.backgroundColor = "#b0b0b0";
+    
 </script>
 
-<div id = "tool_selection">
-    <h4>Pick your tool!</h4>
-
-    <form>
-        <input type = "radio" name = "tool" id = "tool" value = "BBDuk"> 
-        <strong>BBDuk:</strong> Suggested for higher quality data -- minamalist trimming. Developed by the Department of Energy.
-        
-        <br>
-        <input type = "radio" name = "tool" id = "tool" value = "Trimmomatic">
-        <strong>Trimmomatic:</strong> Flexible read trimming tool for Illumina NGS data. Developed by the Usadel lab group
-         
-        <br>
-
-        <h4>Add a visualization tool?</h4>
-        <input type = "checkbox" id = "visualization" value = "yes">
-        <strong>FastQC:</strong> Top visualization software for quality control of high throughput sequence data.
-        <br>Generate HTML report page for each trimmed file.
-        
-        <br>
-    
-        <button onclick ="show()" type = "button">Next></button>
-        
-        <%= debug @survey %>
-        
-
-    </form>
-    
-</div>    
-
-<div id = "BBDuk_form" style="display:none;">
+<div id = "BBDuk_form" style="display:block;">
     
     <h4>BBDuk: Enter some infromation about your super computing system</h4>
     
     <%= bootstrap_form_for @survey do |f| %>
+        <%= f.hidden_field :tool, value: "BBDuk" %>
         <%= f.text_field :home_dir, label: "Home Directory:" %>
         <%= f.text_field :software_dir, label: "Software Directory:"%>
         <%= f.text_field :input_dir, label: "Input Directory:" %>
         <%= f.text_field :output_dir, label: "Output Directory:" %>
-        <%= f.submit%>
+        <%= f.submit "Add Directory Information" %>
     <% end %>
-
-    
 </div>
 
 
@@ -59,6 +35,7 @@
     <h4>Trimmomatic: Enter some infromation about your super computing system</h4>
     
      <%= bootstrap_form_for @survey do |f| %>
+        <%= f.hidden_field :tool, value: "Trimmomatic" %>
         <%= f.text_field :home_dir, label: "Home Directory:" %>
         <%= f.text_field :software_dir, label: "Software Directory:"%>
         <%= f.text_field :input_dir, label: "Input Directory:" %>
@@ -124,6 +101,3 @@
     
     
 </script>
-    
-    
-    
