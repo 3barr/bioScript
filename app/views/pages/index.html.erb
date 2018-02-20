@@ -13,25 +13,33 @@ Pbar.style.display = 'none';
 <div class="page-content home narrow">
     <div class="wrap">
         <div class="row">
-            <center><h3>About BioScript</h3></center>
+            <center><h3>Everything BioScript Has To Offer</h3></center>
             <div class="col-md-4">
                 <center><%= image_tag("targetUsers.png", :size => "120x80")%></center>
-                </br><p><b>Target Users:</b> Biological researchers working with next generation sequencing 
+                </br><center><b>Who benifits from this site?</b></center>
+                
+                </br><p>Biological researchers working with next generation sequencing 
                 data who are unfamiliar with the trimming and quality checking process of raw genomic data.</p>
             </div><!--end column1 -->
             
             <div class="col-md-4">
                 <center><%= image_tag("tools.png", :size => "120x80")%></center>
-                </br><p><b>Trimming Tools:</b> BioScript suggests two trimming tools, <i> BBDuk </i> and
-                <i>Trimmomatic</i>.  Both tools work for wide verarity situations, see our info page for
-                more details on each tool.</p>
+                </br><center><b>What trimming tools are available on BioScript?</b></center>
+                
+                <p><b>BBDuk:</b> In our opinion the Goldilocks of trimming, not too much and not too little.
+                
+                </br></br><b>Trimmomatic:</b> Popular trimming tool used for Illumina NGS data. Flexible trimming 
+                with good options to add. </p>
                 
             </div><!--end column2 -->
             
             <div class="col-md-4">
                 <center><%= image_tag("visualization.png", :size => "120x80")%></center>
-                </br><p><b>Visualization:</b> BioScript suggests FastQC be used for visualization of the trimmed
-                data.</p>
+                </br><center><b>What visualization is offered by BioScript?</b></center>
+                
+                </br><p><b>FastQC:</b> Developed by Babraham Bioinformatics, FastQC is the gold standard
+                for quality control visualization. An optional add on for BioScript that creates
+                a folder of html files containing the quality control reports of your command.</p>
             </div><!--end column3 -->
         </div><!--end row-->
         <hr>
@@ -39,20 +47,29 @@ Pbar.style.display = 'none';
             <center><h3>BioScript Products</h3></center>
             <div class="col-md-6">
                 <center><%= image_tag("terminal.png", :size => "120x80")%></center>
-                </br><p>Generate a command line trimming executable.
-                Strengths:
-                Weaknesses:
+                </br><center><b>Command Line Statement</b></center>
+                </br><p> &bull; Input information about the structure of your system's directory. 
+                </br>&bull; Add the trimming options you would like to apply to your data. 
+                </br>&bull; BioScript creates a command you can execute within your system.
+                </br></br><b>Strengths:</b> No knowledge of the super computing properties are needed like node size or computational power.
+                </br><b>Weaknesses:</b> Must be executed on a computational node of the super computing system within the terminal.
                 </p>
             </div><!--end column1 -->
             
             <div class="col-md-6">
                 <center><%= image_tag("script.png", :size => "120x80")%></center>
-                </br><p>Generate a PBS script to be submitted via linux.
-                Strengths:
-                Weaknesses:
+                </br><center><b>PBS Script</b></center>
+                </br><p> &bull; Input information about the structure of your system's directory.
+                </br>&bull; Input properties of the super computing system such as memory and speed
+                </br>&bull; Add the trimming options you would like to apply to your data. 
+                </br>&bull; BioScript creates a .pbs file you can download and run within your system.
+                </br></br><b>Strengths:</b> Easily executed from a login node, has the ability to sit in a queue.
+                </br><b>Weaknesses:</b> Need to have knowledge of the super computing properties
                 </p>
             </div><!--end column2 -->
         </div><!--end row-->
+        
+        <!--
         <hr>
         <div class="row">
             <center><h3>BioScript Help</h3></center>
@@ -63,41 +80,8 @@ Pbar.style.display = 'none';
                 <center>Comments box</center>
             </div>
         </div>
-        
+        -->
         
     </div><!--end wrap -->
 </div> <!--End page-contnet-->
 
-
-
-
-
-
-<!--
-<div>
-
-    <center><h1>Welcome to BioScript</h1>
-    A website to walk you through the proccess of data trimming and curation.</center>
-    
-    <!--<#%= image_tag("BioScriptLogo.png") %> #does not work because it looks in awesim/pun/dev/
-    
-    <div class="column" float="left">
-        <p><strong>Target Users:</strong> Biological researchers working with next generation sequencing 
-        data who are unfamiliar with the trimming and quality checking process of raw genomic data.</p>
-        <br/>
-        
-        <p><strong>Our Goal:</strong> We want to provide insight
-        into the best trimming software, how to run trimming commands on high performance computing systems, and how to
-        interpreting those results. </p>
-        <br/>
-
-        <p><strong>Having trouble?</strong> Visit our 'Help' page 
-        <#%=link_to("Here", controller: "pages", action: "help") %> for step by step tutorials on how to download software,
-        interperate FastQC reports, and complete the BioScript forms</p>
-        
-        <p><strong>Ready to start?</strong> Jump right into creating a command line argument for trimming
-        <#%=link_to("Here.", controller: "forms", action: "tool") %> Or start generating a PBS script 
-        <#%=link_to("Here.", controller: "surveys", action: "new") %> </p>
-        
-    </div>
-</div> -->

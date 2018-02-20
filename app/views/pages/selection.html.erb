@@ -12,7 +12,7 @@
 
     <form>
         <input type = "radio" name = "tool" id = "tool" value = "BBDuk"> 
-        <strong>BBDuk:</strong> Suggested for higher quality data -- minamalist trimming. Developed by the Department of Energy.
+        <strong>BBDuk:</strong>A powerful tool created by the Joint Genome Institute, BBDuk uses Kmers and is capable of quality-trimming and filtering.
         
         <br>
         <input type = "radio" name = "tool" id = "tool" value = "Trimmomatic">
@@ -32,20 +32,43 @@
     
 </div>
 
-<div id = "download_div" style= "display:none;">
+<!-- Download div if BBDuk is selected -->
+<div id = "BBdownload_div" style= "display:none;">
     
     <!-- page dynamically loads selected software and only shows how to download those programs --> 
-    <H4>Now download BBDuk and FastQC</H4>
+    <H4>Now download BBDuk</H4>
     
-    <p>>Link to the BBDuk software page can be found <a href = "https://jgi.doe.gov/data-and-tools/bbtools/bb-tools-user-guide/bbduk-guide/">Here.</a></p>
+    <p>>Link to the BBDuk software page can be found <a href = "https://jgi.doe.gov/data-and-tools/bbtools/bb-tools-user-guide/bbduk-guide/" target="_blank">Here.</a></p>
+
+</div>
+
+<!-- Download div if Trimmomatic is selected-->
+<div id = "Tdownload_div" style= "display:none;">
     
-    <br>
+    <!-- page dynamically loads selected software and only shows how to download those programs --> 
+    <H4>Now download Trimmomatic</H4>
     
-    <p>>Link to the FastQC software page can be found <a href = "https://www.bioinformatics.babraham.ac.uk/projects/fastqc/">Here.</a> </p>
+    <p>>Link to the Trimmomatic software page can be found <a href = "http://www.usadellab.org/cms/?page=trimmomatic" target="_blank">Here.</a></p>
+    
+</div>
+
+<!-- Download div if FastQC is selected-->
+<div id = "Fdownload_div" style= "display:none;">
+    
+    <!-- page dynamically loads selected software and only shows how to download those programs --> 
+    <H4>Now download FastQC</H4>
+
+    <p>>Link to the FastQC software page can be found <a href = "https://www.bioinformatics.babraham.ac.uk/projects/fastqc/" target="_blank">Here.</a> </p>
     
     <button type="button"><%= link_to "Next >", surveys_new_path %></button>
     
 </div>
+
+<div id = next_button style = "display:none;">
+    <button type="button"><%= link_to "Next >", surveys_new_path %></button>
+</div>
+
+
 
 <script type = "text/javascript">
     
@@ -78,16 +101,37 @@
         var tool_div = document.getElementById("tool_selection");
         tool_div.style.display = tool_div.style.display == "none" ? "block" : "none";
         
-        var download_div = document.getElementById("download_div");
-        var trimmomatic_div = document.getElementById("Trimmomatic_form");
+        var BBdownload_div = document.getElementById("BBdownload_div");
+        var trimmomatic_div = document.getElementById("Tdownload_div");
+        var FastQC_div = document.getElementById("Fdownload_div");
         
+        var button_div = document.getElementById("next_button");
         
-        if((tool == "BBDuk") || (tool == "Trimmomatic")){
-            download_div.style.display = download_div.style.display == "none" ? "block" : "none";
+        if(tool == "BBDuk"){
+            BBdownload_div.style.display = BBdownload_div.style.display == "none" ? "block" : "none";
             
             pBar_select.style.backgroundColor = "#53c322";
             pBar_download.style.backgroundColor = "#b0b0b0";
             
+            if(fastQC == "yes"){
+                FastQC_div.style.display = FastQC_div.style.display == "none" ? "block" : "none";
+            }
+            else{
+                button_div.style.display = button_div.style.display == "none" ? "block" : "none";
+            }
+            
+        }
+        else if(tool == "Trimmomatic"){
+            trimmomatic_div.style.display = trimmomatic_div.style.display == "none" ? "block" : "none";
+            pBar_select.style.backgroundColor = "#53c322";
+            pBar_download.style.backgroundColor = "#b0b0b0";
+            
+            if(fastQC == "yes"){
+                FastQC_div.style.display = FastQC_div.style.display == "none" ? "block" : "none";
+            }
+            else{
+                button_div.style.display = button_div.style.display == "none" ? "block" : "none";
+            }
         }
         else{
             alert("Please select a tool");

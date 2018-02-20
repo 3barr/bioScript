@@ -31,7 +31,7 @@ class SurveysController < ApplicationController
     def bbduk_options
         @survey = Survey.update(params[:survey])
         #@survey = Survey.new(params[:survey])
-        #survey = Survey.update_attributes(params[:survey])
+        #@survey = Survey.update_attributes(params[:survey])
         
         
         render :report

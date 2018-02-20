@@ -15,7 +15,7 @@
     
 </script>
 
-<div id = "BBDuk_form" style="display:block;">
+<div id = "BBDuk_form" style="display:none;">
     
     <h4>BBDuk: Enter some infromation about your super computing system</h4>
     
@@ -40,7 +40,7 @@
         <%= f.text_field :software_dir, label: "Software Directory:"%>
         <%= f.text_field :input_dir, label: "Input Directory:" %>
         <%= f.text_field :output_dir, label: "Output Directory:" %>
-        <%= f.submit%>
+        <%= f.submit "Add Directory Information" %>
     <% end %>
 
     
@@ -49,6 +49,23 @@
 
 
 <script type = "text/javascript">
+    
+    function showForm(){
+        var tool = sessionStorage.getItem("tool");
+        
+        var bbduk_form = document.getElementById("BBDuk_form");
+        var trimmomatic_form = document.getElementById("Trimmomatic_form");
+        
+        if(tool == "BBDuk"){
+            bbduk_form.style.display = bbduk_form.style.display == "none" ? "block" : "none";
+        }
+        else if(tool == "Trimmomatic"){
+            trimmomatic_form.style.display = trimmomatic_form.style.display == "none" ? "block" : "none";
+        }
+        
+    }
+    
+    window.onload = showForm;
     
     function store(){
         sessionStorage.removeItem("tool"); //allows for tool reselection
