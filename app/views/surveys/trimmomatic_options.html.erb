@@ -18,7 +18,7 @@
 
 <div id = "read">
     Single-end or Paired-end Reads? <br>
-    <select id = "read_form" onchange="showDiv(this)">
+    <select id = "read_form" onchange="changeIn(this)">
         <option value="Single">Single-end</option>
         <option value="Paired">Paired-end</option>
     </select>
@@ -26,8 +26,8 @@
 </div> 
 
 <div id = "single" style="display:block;">
-    <button class="btn btn-outline-primary" onclick="showDiv('s_file')">Single file</button>
-    <button class="btn btn-outline-primary" onclick="showDiv('s_files')">Multiple files</button>
+    <button class="btn btn-outline-primary" onclick="changeIn('s_file')">Single file</button>
+    <button class="btn btn-outline-primary" onclick="changeIn('s_files')">Multiple files</button>
     
     <div id = "s_file">
         <br>Single file to trim:<input type ="text" class ="form-control" value="Input File Name">
@@ -42,8 +42,8 @@
 
 <div id = "paired" style="display:none;">
     
-    <button class="btn btn-outline-primary" onclick="showDiv('p_file')">One Pair</button>
-    <button class="btn btn-outline-primary" onclick="showDiv('p_files')">Multiple Pairs</button>
+    <button class="btn btn-outline-primary" onclick="changeIn('p_file')">One Pair</button>
+    <button class="btn btn-outline-primary" onclick="changeIn('p_files')">Multiple Pairs</button>
     
     <div id = "p_file">
         <br>
@@ -67,11 +67,14 @@
     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add Operation
 </button>
 
-<div id = "operation" style="display:none;">
+<div class="option" id = "operation" style="display:none;">
     <select id = "target" onchange="showDiv(this)">
         <option value="">Select Trimming Operation</option>
-        <option value="Kmer">Kmer</option>
-        <option value="SlidingWindow">Sliding Window</option>
+        <option value="leading">Minimum quality for a base</option>
+        <option value="SlidingWindow">Sliding window</option>
+        <option value="crop">Crop read</option>
+        <option value="Hcrop">Crop read from start</option>
+        <option value="minLen">Minimum length of read</option>
     </select>
     
     <button class = "btn-sm" id = "trash" onclick="removeOperation(this.parentElement)">
@@ -81,9 +84,77 @@
     
 </div>    
 
-<div id = "Kmer" style = "display:none;">Hello from KMER</div>
+<div class = "option" id = "leading" style = "display:none;">
+    <p>Set the minimum quality required to keep a base.</p>
     
-    <div id="SlidingWindow" style="display:none;">Hello from sliding window</div>
+    <%= bootstrap_form_for @survey, :url => surveys_trimmomatic_options_path(@survey) do |f| %>
+        <div class = "form-inline">
+            <%= f.number_field :leadingQ, label: "Minimum Base Quality: " %>
+        </div>
+    <% end %>
+    
+    
+</div>
+    
+<div id="SlidingWindow" style="display:none;" class="option">
+    <p>Perform a sliding window trimming, cut read when the average quality within the window
+    falls below a threshold</p>
+    
+    <%= bootstrap_form_for @survey, :url => surveys_trimmomatic_options_path(@survey), :html => {:class => "form-horizontal center"} do |f| %>
+        <div class = "form-inline">
+            <div class = "col-md-4">
+                <%= f.number_field :winSize, label: "Window Size: " %>
+            </div>
+            <div class = "col-md-4"></div>
+                <%= f.number_field :winQuality, label: "Required Quality of Window: " %>
+            </div>
+        </div>
+    <% end %>
+    
+</div>
+
+<div id="crop" style="display:none;" class="option">
+    <p>Cut off the end of a read after a desired length for every read.</p>
+    
+    <%= bootstrap_form_for @survey, :url => surveys_trimmomatic_options_path(@survey) do |f| %>
+        <div class = "form-inline">
+            <%= f.number_field :cropLen, label: "Length from start of the read: " %>
+        </div>
+    <% end %>
+    
+</div>
+
+<div id="Hcrop" style="display:none;" class="option">
+    <p>Cut off the start of a read after a desired length for every read.</p>
+    
+    <%= bootstrap_form_for @survey, :url => surveys_trimmomatic_options_path(@survey) do |f| %>
+        <div class = "form-inline">
+            <%= f.number_field :HcropLen, label: "Length to crop: " %>
+        </div>
+    <% end %>
+    
+</div>
+
+<div id="minLen" style="display:none;" class="option">
+    <p>Specifies the minimum length of a read to be kept.</p>
+    
+    <%= bootstrap_form_for @survey, :url => surveys_trimmomatic_options_path(@survey) do |f| %>
+        <div class = "form-inline">
+            <%= f.number_field :minLen, label: "Required read length: " %>
+        </div>
+    <% end %>
+    
+</div>
+
+
+<div>
+    <hr>
+    <center>
+        <%= bootstrap_form_for @survey, :url => surveys_trimmomatic_options_path(@survey) do |f| %>
+            <%= f.submit "Create" %>
+        <% end %>
+    </center>
+</div>
 
 <script>
 
@@ -94,27 +165,42 @@
         
     }
 
+    /*
+    Function changes displays for dropdown menu
+    Creates a clone of the orginal div above, changes the name of the div so that
+    it can be checked for when the button is clicked -- can't add same option twice
+    
+    Each dropdown element/div will have two variables in the function 
+    
+    elem--dropdown element selected inside add operation determines what was selected
+    
+    */
     function showDiv(elem){
         
-        var kMer_div = document.getElementById('Kmer');
-        var kMer_check = document.getElementById("trueKmer");
+        var leading_div = document.getElementById('leading');
+        var leading_check = document.getElementById("trueLeading");
         
         var SlidWin_div = document.getElementById('SlidingWindow');
         var SlidWin_check = document.getElementById("trueSlidWin");
         
-        var single_div = document.getElementById('single');
+        var crop_div = document.getElementById('crop');
+        var crop_check = document.getElementById("trueCrop");
         
-        var paired_div = document.getElementById('paired');
+        var Hcrop_div = document.getElementById('Hcrop');
+        var Hcrop_check = document.getElementById("trueHCrop");
+        
+        var minLen_div = document.getElementById('minLen');
+        var minLen_check = document.getElementById("trueMinLen");
         
         
-        if(elem.value == "Kmer"){
-            if(kMer_check == null){
-                var clone = kMer_div.cloneNode(true);
-                clone.id = "trueKmer";
+        if(elem.value == "leading"){
+            if(leading_check == null){
+                var clone = leading_div.cloneNode(true);
+                clone.id = "trueLeading";
                 clone.style = "display:block;";
                 elem.parentNode.append(clone);
             }
-            if(kMer_check != null){
+            if(leading_check != null){
                 alert("You've already choosen this option");
             }
         }
@@ -129,7 +215,53 @@
                 alert("You've already choosen this option");
                 }
         }
-        else if(elem.value == "Single"){
+        else if(elem.value == "crop"){
+            if(crop_check == null){
+                var clone = crop_div.cloneNode(true);
+                clone.id = "trueCrop";
+                clone.style = "display:block;";
+                elem.parentNode.appendChild(clone);
+            }
+            if(crop_check != null){
+                alert("You've already choosen this option");
+                }
+        }
+        else if(elem.value == "Hcrop"){
+            if(Hcrop_check == null){
+                var clone = Hcrop_div.cloneNode(true);
+                clone.id = "trueHCrop";
+                clone.style = "display:block;";
+                elem.parentNode.appendChild(clone);
+            }
+            if(Hcrop_check != null){
+                alert("You've already choosen this option");
+                }
+        }
+        else if(elem.value == "minLen"){
+            if(minLen_check == null){
+                var clone = minLen_div.cloneNode(true);
+                clone.id = "trueMinLen";
+                clone.style = "display:block;";
+                elem.parentNode.appendChild(clone);
+            }
+            if(minLen_check != null){
+                alert("You've already choosen this option");
+                }
+        }
+        
+    }
+    
+    /*
+    Function changes div display for single or paired end reads
+    also called when changing from single or multiple files 
+    */
+    function changeIn(elem){
+        
+        var single_div = document.getElementById('single');
+        
+        var paired_div = document.getElementById('paired');
+        
+        if(elem.value == "Single"){
             single_div.style = "display:block;";
             paired_div.style = "display:none;";
         }
@@ -153,8 +285,6 @@
             document.getElementById('p_file').style = "display:none;";
             document.getElementById('p_files').style = "display:block;";
         }
-        
-        
     }
 
 </script>
