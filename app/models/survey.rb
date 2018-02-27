@@ -7,7 +7,13 @@ class Survey
         :input_dir,
         :output_dir,
         :tool,
-        :Qscore
+        :Qscore,
+        :winSize,
+        :winQuality,
+        :leadingQ,
+        :cropLen,
+        :HcropLen,
+        :minLen
         #:read_type,
         #:input_files,
     )

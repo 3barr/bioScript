@@ -1,0 +1,222 @@
+<script>
+    var pBar_options = document.getElementById("options");
+    var pBar_select = document.getElementById("select");
+    var pBar_download = document.getElementById("download");
+    var pBar_directory = document.getElementById("directory");
+    
+    pBar_options.style.backgroundColor = "#b0b0b0";
+    
+    pBar_select.style.backgroundColor = "#53c322";
+    pBar_download.style.backgroundColor = "#53c322";
+    pBar_directory.style.backgroundColor = "#53c322";
+</script>
+
+<h4>BBDuk Trimming Options</h4>
+
+<div id = "read">
+    Single-end or Paired-end Reads? <br>
+    <select id = "read_form" onchange="changeIn(this)">
+        <option value="Single">Single-end</option>
+        <option value="Paired">Paired-end</option>
+    </select>
+</div> 
+
+<%= bootstrap_form_for @bbduk do |f| %>
+
+<div id = "single" style="display:block;">
+    <button type ="button" class="btn btn-outline-primary" onclick="changeIn('s_file')">Single file</button>
+    <button type ="button" class="btn btn-outline-primary" onclick="changeIn('s_files')">Multiple files</button>
+    
+    <div id = "s_file">
+        <br>
+        <%= f.text_field :s_file, label: "Single file to trim:" %>
+    </div>
+    
+    <div id = "s_files" style="display:none;">
+        <br>
+        <%= f.text_field :s_files, label: "Enter multiple file names seperated by a comma:" %>
+    </div>
+    
+    </br>
+</div>
+
+<div id = "paired" style="display:none;">
+    
+    <button type ="button" class="btn btn-outline-primary" onclick="changeIn('p_file')">One Pair</button>
+    <button type ="button" class="btn btn-outline-primary" onclick="changeIn('p_files')">Multiple Pairs</button>
+    
+    <div id = "p_file">
+        <br>
+        <%= f.text_field :p_file_R, label: "Enter the file name for the right side read of a single pair:" %>
+        <%= f.text_field :p_file_L, label: "Enter the file name for the left side read of a single pair:"%>
+    </div>
+    
+    <div id = "p_files" style="display:none;">
+        <br>
+        <%= f.text_field :p_files_R, label: "Enter the file name for the right side read of paired files, seperated by a comma:" %>
+        <%= f.text_field :p_files_L, label: "Enter the file name for the left side read of paired files, seperated by a comma: " %>
+    </div>
+</div>    
+
+<hr>
+<select id = "target">
+        <option value="">Select Trimming Operation</option>
+        <option value="qTrim">Quality Trimming</option>
+        <option value="fTrim">Force Trimming</option>
+        <option value="SlidingWindow">Sliding Window</option>
+        <option value="qFiltering">Quality Filtering</option>
+</select>
+
+<button class = "btn" id = "button" type = "button" onclick="showDiv()">
+    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add Operation
+</button>
+
+<!-- 
+OPTIONS DIV, values in drop downlist correspond to the div they are adding
+-->
+
+<div id = "formDiv">
+
+    <div class = "option" id = "qTrim" style = "display:none;">
+        <p>Trim the read when its quality goes below an identified Phred score.
+        
+        <button type ="button" class = "btn-sm" id = "trash" onclick="removeOperation(this.parentElement)">
+            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+        </button>
+        </p>
+        
+        <div class = "form-inline">
+            <%= f.number_field :trimq, label: "Enter Phred score to trim to:" %>
+        </div>
+    </div>
+    
+    <div class = "option" id = "fTrim" style = "display:none;">
+        <p>Identify the left most bases to trim, and/or enter the right most base to keep.
+        For the right side, if you enter 80, bases from 80 to the end will be trimmed. 
+        
+        <button type ="button" class = "btn-sm" id = "trash" onclick="removeOperation(this.parentElement)">
+            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+        </button>
+        </p>
+        
+        <div class = "form-inline">
+            <%= f.number_field :ftl, label: "Bases to trim from the start of the read:" %>
+            <%= f.number_field :ftr, label: "Trim all bases after this base:" %>
+        </div>
+    </div>
+    
+    <div class = "option" id = "qFiltering" style = "display:none;">
+        <p>This option will discard the reads with average quality below the Phred score identified.
+        
+        <button type ="button" class = "btn-sm" id = "trash" onclick="removeOperation(this.parentElement)">
+            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+        </button>
+        </p>
+        
+        <div class = "form-inline">
+            <%= f.number_field :maq, label: "Required average Phred score of read:" %>
+        </div>
+    </div>
+    
+    
+    <div id="SlidingWindow" style="display:none;">Hello from sliding window</div>
+
+</div><!-- End of Form Div -->
+
+<hr>
+<center>
+        <%= f.submit "Create" %>
+    <% end %>
+</center>
+
+<script>
+
+    function removeOperation(elem){
+        var form_div = elem.parentElement;
+        
+        form_div.style.display = "none";
+    }
+
+    function showDiv(){
+        
+        var elem = document.getElementById('target');
+        
+        var qTrim_div = document.getElementById('qTrim');
+        
+        var qFilt_div = document.getElementById('qFiltering');
+        
+        var fTrim_div = document.getElementById('fTrim');
+        
+        var SlidWin_div = document.getElementById('SlidingWindow');
+        
+        if(elem.value == "qTrim"){
+            qTrim_div.style.display = qTrim_div.style.display == "none" ? "block" : "none";
+        }
+        else if(elem.value == "SlidingWindow"){
+            
+        }
+        else if(elem.value == "fTrim"){
+            fTrim_div.style.display = fTrim_div.style.display == "none" ? "block" : "none";
+        }
+        else if(elem.value == "qFiltering"){
+            qFilt_div.style.display = qFilt_div.style.display == "none" ? "block" : "none";
+        }
+    }
+    
+    /*
+    Function changes div display for single or paired end reads
+    also called when changing from single or multiple files 
+    */
+    function changeIn(elem){
+        
+        var single_div = document.getElementById('single');
+        
+        var paired_div = document.getElementById('paired');
+        
+        if(elem.value == "Single"){
+            single_div.style = "display:block;";
+            paired_div.style = "display:none;";
+        }
+        else if(elem.value == "Paired"){
+            single_div.style = "display:none;";
+            paired_div.style = "display:block;";
+        }
+        else if(elem == "s_file"){
+            document.getElementById('s_file').style = "display:block;";
+            document.getElementById('s_files').style = "display:none;";
+        }
+        else if(elem == "s_files"){
+            document.getElementById('s_file').style = "display:none;";
+            document.getElementById('s_files').style = "display:block;";
+        }
+        else if(elem == "p_file"){
+            document.getElementById('p_file').style = "display:block;";
+            document.getElementById('p_files').style = "display:none;";
+        }
+        else if(elem == "p_files"){
+            document.getElementById('p_file').style = "display:none;";
+            document.getElementById('p_files').style = "display:block;";
+        }
+    }
+
+</script>
+        
+        
+</script>
+<script>
+    
+    var i = 1;
+    function addOperation(){
+        
+        var original = document.getElementById('operation');
+        
+        var clone = original.cloneNode(true);
+        
+        clone.id = "operation" + i++;
+        clone.style = "display:block;";
+        
+        original.parentNode.appendChild(clone);
+        //or use appendChild(clone);
+        
+    }
+</script>

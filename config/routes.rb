@@ -5,16 +5,20 @@ Systemstatus::Application.routes.draw do
   resources :forms, only: [:tool, :download, :setup, :options, :summary]
   resources :surveys, only: [:new, :create, :bbduk_options, :trimmomatic_options, :update]
   resources :pages, only: [:index, :script, :selection]
+  resources :bbduks, only: [:new, :create, :report]
+  resources :trimmomatics, only: [:new, :create, :report]
   get "pages/about"
   get "pages/help"
   get "pages/selection"
   get "pages/index"
-  #get "forms/tool"
-  #get "forms/download"
-  #get "forms/options"
-  #get "forms/setup"
-  #get "forms/summary"
   
+  get "bbduks/new"
+  get "bbduks/create"
+  get "bbduks/report"
+  
+  get "trimmomatics/new"
+  get "trimmomatics/create"
+  get "trimmomatics/report"
   
   get "surveys/new"
   get "surveys/bbduk_options"
@@ -22,8 +26,9 @@ Systemstatus::Application.routes.draw do
   get "surveys/report"
   
   
-  match "/surveys/bbduk_options" => "surveys#bbduk_options", :via => :post, :as => :bbduk_options
-    
+  match "surveys/bbduk_options" => "surveys#bbduk_options", :via => :post, :as => :bbduk_options
+  
+  match "surveys/trimmomatic_options" => "surveys#trimmomatic_options", :via => :post, :as => :trimmomatic_options
 
 
   # The priority is based upon order of creation: first created -> highest priority.

@@ -3,7 +3,6 @@ class SurveysController < ApplicationController
     
     def new
         @survey = Survey.new
-        
     end
     
     def create
@@ -15,9 +14,10 @@ class SurveysController < ApplicationController
         #then direct to the correct options based on tool param
         
         if (@survey.tool=="BBDuk")
-            render :bbduk_options
+            redirect_to bbduks_new_url
         elsif(@survey.tool =="Trimmomatic")
-            render :trimmomatic_options
+            #render :trimmomatic_options
+            redirect_to trimmomatics_new_url
         else
             render :new
         end
@@ -39,6 +39,7 @@ class SurveysController < ApplicationController
     end
     
     def trimmomatic_options
+        render :report
     end
     
     def report
