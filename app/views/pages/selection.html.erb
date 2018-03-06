@@ -1,4 +1,6 @@
 <script>
+
+
     var pBar_select = document.getElementById('select');
     
     pBar_select.style.backgroundColor = "#b0b0b0";
@@ -21,7 +23,7 @@
         <br>
 
         <h4>Add a visualization tool?</h4>
-        <input type = "checkbox" id = "visualization" value = "yes">
+        <input type = "checkbox" id = "visualization" value = "yes" checked>
         <strong>FastQC:</strong> Top visualization software for quality control of high throughput sequence data.
         <br>Generate HTML report page for each trimmed file.
         
@@ -36,9 +38,24 @@
 <div id = "BBdownload_div" style= "display:none;">
     
     <!-- page dynamically loads selected software and only shows how to download those programs --> 
-    <H4>Now download BBDuk</H4>
+    <H4>Now download BBDuk:</H4>
+    <center><P> To do this you will need to start by downloading the whole suit of BBMap tools. The link to do that is found <a href = "https://sourceforge.net/projects/bbmap/files/?source=navbar" target = "_blank">Here.</a>
+    </br>Once at the source forage site, select the most popular BBMap_(version).tar.gz file downloaded this week. 
+    <%= image_tag("BBMap-Download_screenshot.png", style: "height:200px;width:auto%;") %>
+    <hr>
+    Then add downloaded file to location in super computing directory that will hold all of your software tools
+    </br> Notice I have created a directory called "software" inside my Home directory called "woo0024"
+    <%= image_tag("uploadBBMAP_screenshot.png", style: "height:250px;width:auto%;") %>
     
-    <p>>Link to the BBDuk software page can be found <a href = "https://jgi.doe.gov/data-and-tools/bbtools/bb-tools-user-guide/bbduk-guide/" target="_blank">Here.</a></p>
+    <hr>
+    Enter a Linux terminal, in OSC OnDemand hit "Open in Terminal" button, and make sure you are in the directory of the BBMap_(version).tar.gz file.
+    <br>Then run the command "tar -xvzf BBMap_(version).tar.gz" replacing "(version)" with the numbers corresponding to the numbers in the file you've already downloaded.
+    </br><%= image_tag("BBMap-unpack_screenshot.png", style: "height:200px;width:auto%;") %>
+    </br>This creates the subfolder named "bbmap" located in the software directory. In my example the directory location of the BBMap software is now <b>"woo0024/software/bbmap/"</b>
+    </br>
+    Now BBDuk has been installed, See the BBDuk installation page <a href = "https://jgi.doe.gov/data-and-tools/bbtools/bb-tools-user-guide/installation-guide/" target="_blank">Here</a> if more guidance is needed
+    </P></center>
+
 
 </div>
 
@@ -56,15 +73,31 @@
 <div id = "Fdownload_div" style= "display:none;">
     
     <!-- page dynamically loads selected software and only shows how to download those programs --> 
-    <H4>Now download FastQC</H4>
+    <H4>Now download FastQC:</H4>
 
-    <p>>Link to the FastQC software page can be found <a href = "https://www.bioinformatics.babraham.ac.uk/projects/fastqc/" target="_blank">Here.</a> </p>
+    <center><p>Link to the FastQC software download file can be found <a href = "https://www.bioinformatics.babraham.ac.uk/projects/download.html#fastqc" target="_blank">Here.</a> 
+    </br>
     
+    <%= image_tag("FastQC-download_screenshot.png", style: "height:180px;width:auto%;") %>
+    <hr>
+    Upload fastqc_(version).zip file to the software directory on your super computer system.
+    </br>Follow the commands in the screenshot below to decompress the .zip file. This creates a folder called "FastQC" in your directory.
+    <%= image_tag("FastQC-unpack_screenshot.png", style: "height:180px;width:auto%;") %>
+    <hr>
+    </p></center>
+    
+    <center><p>In these software download examples, the locaiton of the software directory will be inside the home directory
+    <br> called "woo0024/software/"
+    </p></center>
     <button type="button"><%= link_to "Next >", surveys_new_path %></button>
     
 </div>
 
 <div id = next_button style = "display:none;">
+    
+    <center>X<p>In these software download examples, the locaiton of the software directory will be inside the home directory
+    <br> called "woo0024/software/"
+    </p></center>
     <button type="button"><%= link_to "Next >", surveys_new_path %></button>
 </div>
 
@@ -75,15 +108,21 @@
     function store(){
         sessionStorage.removeItem("tool"); //allows for tool reselection
         var radios = document.getElementsByName("tool");
-        var INviz = document.getElementById("visualization");
+        var INviz = document.getElementById("visualization").checked;
 
         //Deals with radio buttons input complexity 
         for (var i =0, length = radios.length; i < length; i++){
             if (radios[i].checked){
                 sessionStorage.setItem("tool", radios[i].value);
         }}
+        console.log(INviz);
         
-        sessionStorage.setItem("viz", INviz.value);
+        if(INviz == true){
+            sessionStorage.setItem("viz", "yes");
+        }
+        else{
+            sessionStorage.setItem("viz", "no");
+        }
         //might need to removeItem if visualization is not wanted? maybe in edit function
         
         var tool = sessionStorage.getItem("tool");
@@ -114,9 +153,10 @@
             pBar_download.style.backgroundColor = "#b0b0b0";
             
             if(fastQC == "yes"){
-                FastQC_div.style.display = FastQC_div.style.display == "none" ? "block" : "none";
+                FastQC_div.style.display = "block";
             }
-            else{
+            else if(fastQC == "no"){
+                FastQC_div.style.display = "none";
                 button_div.style.display = button_div.style.display == "none" ? "block" : "none";
             }
             
@@ -127,12 +167,15 @@
             pBar_download.style.backgroundColor = "#b0b0b0";
             
             if(fastQC == "yes"){
-                FastQC_div.style.display = FastQC_div.style.display == "none" ? "block" : "none";
+                FastQC_div.style.display = "block";
             }
-            else{
+            else if(fastQC == "no"){
+                FastQC_div.style.display = "none";
                 button_div.style.display = button_div.style.display == "none" ? "block" : "none";
             }
+            
         }
+        
         else{
             alert("Please select a tool");
         }
