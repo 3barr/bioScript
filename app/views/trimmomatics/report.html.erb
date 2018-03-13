@@ -5,7 +5,7 @@
     var pBar_directory = document.getElementById("directory");
     var pBar_command = document.getElementById("command");
     
-    pBar_command.style.backgroundColor = "#b0b0b0";
+    pBar_command.style.backgroundColor = "#ff1616";
     
     pBar_options.style.backgroundColor = "#53c322";
     pBar_select.style.backgroundColor = "#53c322";
@@ -14,5 +14,41 @@
     
 </script>
 
+<br>
+<h3>Command Generated for Trimmomatic:</h3>
+<% all_options = [@trimmomatic.winSize, @trimmomatic.winQuality, @trimmomatic.leadingQ, @trimmomatic.cropLen, @trimmomatic.HcropLen, @trimmomatic.minLen]%>
+<% optionName = ["SLIDINGWINDOW", "", "LEADING", "CROP", "HCROP", "MINLEN"] %>
+<% options = Array.new %>
 
-<%= @trimmomatic.inspect %> 
+<% i = 0 %>
+<% all_options.each do |o| %>
+    <%if o != "" %>
+        <% options.push(optionName[i]) %>
+    <% end %>
+    <% i = i +1 %>
+<% end %>
+
+<% use = Array.new %>
+<% options.each do |o| %>
+    <% if o == "SLIDINGWINDOW" %> 
+        <% use.push("SLIDINGWINDOW:#{@trimmomatic.winSize}:#{@trimmomatic.winQuality}") %>
+    <% elsif o == "LEADING" %>
+        <% use.push("LEADING:#{@trimmomatic.leadingQ}") %>
+    <% elsif o == "CROP" %>
+        <% use.push("CROP:#{@trimmomatic.cropLen}") %>
+    <% elsif o == "HCROP" %>
+        <% use.push("HCROP:#{@trimmomatic.HcropLen}") %>
+    <% elsif o == "MINLEN" %>
+        <% use.push("MINLEN:#{@trimmomatic.minLen}") %>
+    <% end %>
+<% end %> 
+
+
+<br>
+<%= "java -jar #{@trimmomatic.soft_dir}/trimmomatic/trimmomatic-0.35.jar  SE -phred64 #{@trimmomatic.in_dir}#{@trimmomatic.s_file} #{@trimmomatic.out_dir}out1.fq.gz "   %>
+<% use.each do |x| %> 
+    <%= x %>
+<% end %> 
+
+<hr>
+<p>Run this command from the location in the directory you specified as home -- <%=@trimmomatic.home_dir %></p>

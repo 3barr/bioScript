@@ -6,16 +6,7 @@ class Survey
         :software_dir,
         :input_dir,
         :output_dir,
-        :tool,
-        :Qscore,
-        :winSize,
-        :winQuality,
-        :leadingQ,
-        :cropLen,
-        :HcropLen,
-        :minLen
-        #:read_type,
-        #:input_files,
+        :tool
     )
     
     validates :home_dir, presence: true

@@ -4,7 +4,7 @@
     var pBar_download = document.getElementById("download");
     var pBar_directory = document.getElementById("directory");
     
-    pBar_options.style.backgroundColor = "#b0b0b0";
+    pBar_options.style.backgroundColor = "#ff1616";
     
     pBar_select.style.backgroundColor = "#53c322";
     pBar_download.style.backgroundColor = "#53c322";
@@ -12,58 +12,56 @@
     
 </script>
 
+<% @survey.inspect %>
 
 
-<h4>Trimmomatic Trimming Options</h4>
-
-<div id = "read">
-    Single-end or Paired-end Reads? <br>
-    <select id = "read_form" onchange="changeIn(this)">
-        <option value="Single">Single-end</option>
-        <option value="Paired">Paired-end</option>
-    </select>
-
-</div> 
-
-<%= bootstrap_form_for @trimmomatic do |f| %>
-
-<div id = "single" style="display:block;">
-    <button type ="button" class="btn btn-outline-primary" onclick="changeIn('s_file')">Single file</button>
-    <button type ="button" class="btn btn-outline-primary" onclick="changeIn('s_files')">Multiple files</button>
-    
-    <div id = "s_file">
-        <br>
-        <%= f.text_field :s_file, label: "Single file to trim:" %>
-    </div>
-    
-    <div id = "s_files" style="display:none;">
-        <br>
-        <%= f.text_field :s_files, label: "Enter multiple file names seperated by a comma:" %>
-        <!--<br>Enter multiple file names seperated by a comma:<textarea class = "form-control" rows = "4">Input Multiple file names</textarea> -->
-    </div>
-    
-    </br>
-</div>
-
-<div id = "paired" style="display:none;">
-    
-    <button type ="button" class="btn btn-outline-primary" onclick="changeIn('p_file')">One Pair</button>
-    <button type ="button" class="btn btn-outline-primary" onclick="changeIn('p_files')">Multiple Pairs</button>
-    
-    <div id = "p_file">
-        <br>
-        <%= f.text_field :p_file_R, label: "Right side read of a single pair:" %>
-        <%= f.text_field :p_file_L, label: "Left side read of a single pair:"%>
-    </div>
-    
-    <div id = "p_files" style="display:none;">
-        <br>
-        <%= f.text_field :p_files_R, label: "Right side read of paired files, seperated by a comma:" %>
-        <%= f.text_field :p_files_L, label: "Left side read of paired files, seperated by a comma: " %>
-    </div>
-</div>    
-
+<h3>Select trimming options and input data file names</h3>
 <hr>
+
+<h4>Add operation from the list below by selecting it from the dropdown menu and pressing "+ Add operation"</h4>
+<span onclick="showHelp()">Click here to toggle display of option information.</span>
+<div id = "optionInfo" style ="display:none;" class = "option">
+    <ul>
+        <li>Minimum quality for a base, also called LeadingQ - Cuts bases off the start of a read if below a threshold quality</li>
+            <ul>
+                <li>Specifiy the minimum quality required to keep a base</li>
+                <li>Quality input is reported as a phred score -- a recommended quality score is 13</li>
+            </ul>
+        <br>
+        <li>
+            Sliding Window - Perform a sliding window trimming, cutting once the average quality within the window falls below a threshold.
+            <ul>
+                <li>Window size - Specifices the number of bases examened at one time, averages across these bases</li>
+                <li>Required quality - Specifies the average quality for the bases within the window, phred score -- 15 recommended</li>
+            </ul>
+        </li>
+        <br>
+        <li>
+            Crop Read - Cut the read to a specific length
+            <ul>
+                <li>Length - The number of bases to keep from the start of the read.</li>
+                <li>Use this if you know your read(s) have quality problems at the <b>end</b> of their sequence</li>
+            </ul>
+        </li>
+        <br>
+        <li>
+            Crop read from start - Cut the specificed number of bases from the start of the read
+            <ul>
+                <li>Length - The number of bases to cut from the start of the read</li>
+                <li>Use this if you know your read(s) have quality problems at the <b>Front</b> of their sequences</li>
+            </ul>
+        </li>
+        <br>
+        <li>
+            Minimum Length - Drop the read if it is below a specific length
+            <ul>
+                <li>Read is thrown away if the total lenght is below a specific number</li>
+                <li>Reads under a certian length could contain errors</li>
+            </ul>
+        </li>
+    </ul>
+</div>
+<br>
 <select id = "target">
     <option value="">Select Trimming Operation</option>
     <option value="leading">Minimum quality for a base</option>
@@ -77,6 +75,11 @@
     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add Operation
 </button>
 
+<%= bootstrap_form_for @trimmomatic do |f| %>
+<%= f.hidden_field :home_dir, value: @home %>
+<%= f.hidden_field :soft_dir, value: @soft %>
+<%= f.hidden_field :in_dir, value: @input %>
+<%= f.hidden_field :out_dir, value: @output %>
 
 <div id = "formDiv">
     <div class = "option" id = "leading" style = "display:none;">
@@ -103,7 +106,7 @@
             <%= f.number_field :winSize, label: "Window Size: " %>
             <%= f.number_field :winQuality, label: "Required Quality of Window: " %>
         </div>
-    
+    </div>
     <div id="crop" style="display:none;" class="option">
         <p>Cut off the end of a read after a desired length for every read.
         <button type ="button" class = "btn-sm" id = "trash" onclick="removeOperation(this.parentElement)">
@@ -144,6 +147,38 @@
     </div>
 </div><!-- end of form div -->
 <hr>
+
+
+<div id = "read">
+    <h4>What type of read do you have? Single-end or Paired-end Reads</h4> <br>
+    <select id = "read_form" onchange="changeIn(this)">
+        <option value="Single">Single-end</option>
+        <option value="Paired">Paired-end</option>
+    </select>
+
+</div> 
+
+<div id = "single" style="display:block;">
+    <div id = "s_file">
+        <br>
+        <%= f.text_field :s_file, label: "Enter the file name of your single-end read, if you have multiple files to trim separate file names by a comma:" %>
+    </div>
+    
+    </br>
+</div>
+
+<div id = "paired" style="display:none;">
+
+    <div id = "p_file">
+        <br>
+        Enter the file name of your paired-end reads, if you have multiple files to trim separate file names by a comma. 
+        <%= f.text_field :p_file_R, label: "Right side file of the paired read:" %>
+        <%= f.text_field :p_file_L, label: "Left side file of a paired read:"%>
+    </div>
+    
+</div>  
+
+
 <center>
         <%= f.submit "Create" %>
     <% end %>
@@ -201,6 +236,13 @@
         
     }
     
+    function showHelp(){
+        var helpDiv = document.getElementById("optionInfo");
+        
+        helpDiv.style.display = helpDiv.style.display == "none" ? "block" : "none";
+    }
+    
+    
     /*
     Function changes div display for single or paired end reads
     also called when changing from single or multiple files 
@@ -221,19 +263,9 @@
         }
         else if(elem == "s_file"){
             document.getElementById('s_file').style = "display:block;";
-            document.getElementById('s_files').style = "display:none;";
-        }
-        else if(elem == "s_files"){
-            document.getElementById('s_file').style = "display:none;";
-            document.getElementById('s_files').style = "display:block;";
         }
         else if(elem == "p_file"){
             document.getElementById('p_file').style = "display:block;";
-            document.getElementById('p_files').style = "display:none;";
-        }
-        else if(elem == "p_files"){
-            document.getElementById('p_file').style = "display:none;";
-            document.getElementById('p_files').style = "display:block;";
         }
     }
 

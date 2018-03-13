@@ -13,11 +13,16 @@ class SurveysController < ApplicationController
         #save variable as a param
         #then direct to the correct options based on tool param
         
+        home = @survey.home_dir
+        input = @survey.input_dir
+        output = @survey.output_dir
+        soft = @survey.software_dir
+        
         if (@survey.tool=="BBDuk")
-            redirect_to bbduks_new_url
+            redirect_to bbduks_new_url(:home => home, :in => input, :out => output, :soft => soft)
         elsif(@survey.tool =="Trimmomatic")
             #render :trimmomatic_options
-            redirect_to trimmomatics_new_url
+            redirect_to trimmomatics_new_url(:home => home, :in => input, :out => output, :soft => soft )
         else
             render :new
         end

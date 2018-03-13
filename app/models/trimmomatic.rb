@@ -3,18 +3,18 @@ class Trimmomatic
     
     attr_accessor(
         :s_file,
-        :s_files,
         :p_file_R,
         :p_file_L,
-        :p_files_R,
-        :p_files_L,
-        :Qscore,
         :winSize,
         :winQuality,
         :leadingQ,
         :cropLen,
         :HcropLen,
-        :minLen
+        :minLen,
+        :home_dir,
+        :soft_dir,
+        :in_dir,
+        :out_dir
     )
     
 end
