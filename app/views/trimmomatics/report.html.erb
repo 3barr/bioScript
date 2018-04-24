@@ -43,12 +43,111 @@
     <% end %>
 <% end %> 
 
+<!--Determine input type-->
+<% all_inputs = [@trimmomatic.s_file, @trimmomatic.p_file_R, @trimmomatic.p_file_L] %>
+<% input = ""%>
 
+<% if all_inputs[0] != "" %>
+    <% size = all_inputs[0].split.size %>
+    <% inputA = all_inputs[0].split %>
+    <% input = "" %>
+    <% inputA.each do |x| %> 
+        <% input << " #{@trimmomatic.in_dir}#{x}" %>
+    <% end %>
+    
+    <% output = "" %>
+    <% pbs_output = "" %>
+    <% size.times do |i| %>
+        <% output << " #{@trimmomatic.out_dir}/output#{i+1}.fq," %>
+        <% pbs_output << "output#{i+1}.fq" %>
+    <% end %>
+    <% output = output[0...-1] %> <!--Removes last comma from output strings-->
+
+<% elsif all_inputs[1] != "" && all_inputs[2] != "" %>
+    <% inputR = all_inputs[1].split %>
+    <% inputL = all_inputs[2].split %>
+    <% input1 = "" %>
+    <% input2 = "" %>
+    <% inputR.each do |x| %> 
+        <% input1 << " #{@trimmomatic.in_dir}#{x}" %>
+    <% end %>
+    <% inputL.each do |x| %> 
+        <% input2 << " #{@trimmomatic.in_dir}#{x}" %>
+    <% end %>
+    
+    <% input = "#{input1} #{input2}" %>
+
+    <% size = all_inputs[1].split.size %>
+    <% output1 = "out1 =" %>
+    <% output2 = "out2 =" %>
+    <% pbs_output1 = "out1 =" %>
+    <% pbs_output2 = "out2 =" %>
+    <% size.times do |i| %>
+        <% output1 << " #{@trimmomatic.out_dir}/output_R_#{i+1}.fq," %>
+        <% output2 << " #{@trimmomatic.out_dir}/output_L_#{i+1}.fq," %>
+        <% pbs_output1 << " output_R_#{i+1}.fq," %>
+        <% pbs_output2 << " output_L_#{i+1}.fq," %>
+    <% end %> 
+    <% output1 = output1[0...-1] %>
+    <% output2 = output2[0...-1] %>
+    <% pbs_output1 = output1[0...-1] %>
+    <% pbs_output2 = output2[0...-1] %>
+    <% output = output1 + " " + output2 %>
+    <% pbs_output = pbs_output1 + " " + pbs_output2 %>
+<% end %> 
+
+<!--PRINT COMMAND FOR TRIMMOMATIC-->
 <br>
-<%= "java -jar #{@trimmomatic.soft_dir}/trimmomatic/trimmomatic-0.35.jar  SE -phred64 #{@trimmomatic.in_dir}#{@trimmomatic.s_file} #{@trimmomatic.out_dir}out1.fq.gz "   %>
+<%= "java -jar #{@trimmomatic.soft_dir}trimmomatic/trimmomatic-0.35.jar  SE -phred64 #{input} #{output} "   %>
 <% use.each do |x| %> 
     <%= x %>
 <% end %> 
 
-<hr>
-<p>Run this command from the location in the directory you specified as home -- <%=@trimmomatic.home_dir %></p>
+<div id = "cmdDiv" style = "display:none;">
+    <hr>
+    <p>Run this command from the location in the directory you specified as home -- <%=@trimmomatic.home_dir %></p>
+</div>
+
+<% File.open("/users/PWOO0003/woo0024/awesim/dev/templateTest/public/trimmomaticTrim.pbs", 'w') do |f| %>
+    <% f.puts "#PBS -N trimmomaticTrim" %>
+    <% f.puts "#PBS -l walltime=5:00:00" %>
+    <% f.puts "#PBS -l nodes=1:ppn=28" %>
+    <% f.puts "#PBS -j oe" %>
+    <% f.puts "cd $PBS_O_WORKDIR" %>
+    <% f.puts "cp -r #{@trimmomatic.in_dir} #{@trimmomatic.soft_dir} #{@trimmomatic.home_dir} $TMPDIR" %>
+    <% f.puts "cd $TMPDIR" %>
+    
+<% end %>
+
+
+<div id = "pbsDiv" style = "display:none;">
+    <hr>
+    <center><button><%= link_to "Trimmomatic PBS file", 'trimmomaticTrim.pbs', download: '' %></button></center>
+    <p>PBS file created to run the Trimmomatic command.
+    <br>Download this file and upload it to your super computing system then execute this file in your home directory -- 
+    <%=@trimmomatic.home_dir %>. The command 'qsub trimmomaticTrim.pbs' can be used to submit this trimming job. </p>
+</div>
+
+
+<script>
+    window.onload = function(){
+        showPBS();
+    };
+    
+    function showPBS(){
+        var cDiv = document.getElementById("cmdDiv");
+        var Pdiv = document.getElementById("pbsDiv");
+        var product = sessionStorage.getItem("product");
+        
+        if(product == "PBS"){
+            Pdiv.style.display = "block";
+        }
+        else if(product == "CMD"){
+            cDiv.style.display = "block";
+        }
+    }
+    
+</script>
+
+
+

@@ -1,3 +1,5 @@
+<!--https://github.com/BioInfoTools/BBMap/blob/master/sh/bbduk.sh
+INFORMATION ABOUT BBDUK TRIMMING FLAGS INPUT AND TOOLS -->
 <script>
     var pBar_options = document.getElementById("options");
     var pBar_select = document.getElementById("select");
@@ -12,122 +14,188 @@
 </script>
 
 <h4>BBDuk Trimming Options</h4>
-
-<div id = "read">
-    Single-end or Paired-end Reads? <br>
-    <select id = "read_form" onchange="changeIn(this)">
-        <option value="Single">Single-end</option>
-        <option value="Paired">Paired-end</option>
-    </select>
-</div> 
-
-<%= bootstrap_form_for @bbduk do |f| %>
-
-<div id = "single" style="display:block;">
-    <button type ="button" class="btn btn-outline-primary" onclick="changeIn('s_file')">Single file</button>
-    <button type ="button" class="btn btn-outline-primary" onclick="changeIn('s_files')">Multiple files</button>
-    
-    <div id = "s_file">
-        <br>
-        <%= f.text_field :s_file, label: "Single file to trim:" %>
-    </div>
-    
-    <div id = "s_files" style="display:none;">
-        <br>
-        <%= f.text_field :s_files, label: "Enter multiple file names seperated by a comma:" %>
-    </div>
-    
-    </br>
-</div>
-
-<div id = "paired" style="display:none;">
-    
-    <button type ="button" class="btn btn-outline-primary" onclick="changeIn('p_file')">One Pair</button>
-    <button type ="button" class="btn btn-outline-primary" onclick="changeIn('p_files')">Multiple Pairs</button>
-    
-    <div id = "p_file">
-        <br>
-        <%= f.text_field :p_file_R, label: "Enter the file name for the right side read of a single pair:" %>
-        <%= f.text_field :p_file_L, label: "Enter the file name for the left side read of a single pair:"%>
-    </div>
-    
-    <div id = "p_files" style="display:none;">
-        <br>
-        <%= f.text_field :p_files_R, label: "Enter the file name for the right side read of paired files, seperated by a comma:" %>
-        <%= f.text_field :p_files_L, label: "Enter the file name for the left side read of paired files, seperated by a comma: " %>
-    </div>
-</div>    
-
+<h3>Select trimming options and input data file names</h3>
 <hr>
+
+
+<!--CHANGE THIS AREA FOR BBDUK OPTION DETAILS-->
+<h4>Add operation from the list below by selecting it from the dropdown menu and pressing "+ Add operation"</h4>
+<span onclick="showHelp()">Click here to toggle display of option information.</span>
+<div id = "optionInfo" style ="display:none;" class = "option">
+    <ul>
+        <li>Adapter Trimming - Removes adaptors from beginning and eand of the read</li>
+            <ul>
+                <li>BBMap download includes the reference file for Illumina Truseq and Nextera adapters in /bbmap/resources/adapters.fa</li>
+                <li>Input "adapters.fa" to apply this reference adapter file.</li>
+            </ul>
+        <br>
+        <li>
+            Quality Trimming - Scans each read in the forward and backwards direction
+            <ul>
+                <li>Removes bases in regions of the read where the quality drops below the desired phred score (ex: 10)</li>
+                <li>All quality trimming processes take place after kmer filtering or trimming steps</li>
+            </ul>
+        </li>
+        <br>
+        <li>
+            Force Triming - Give specific number of bases to cut from the read
+            <ul>
+                <li>Identify the number of bases to cut from the start of the read</li>
+                <li>Identify the last base to keep in each read, every base after will be cut</li>
+            </ul>
+        </li>
+        <br>
+        <li>
+            Quality Filtering - Identify the minimum average quality required for a read to be kept
+            <ul>
+                <li>Reads with an average phred score under the desired value will be thrown out</li>
+                <li>All quality trimming processes take place after kmer filtering or trimming steps</li>
+            </ul>
+        </li>
+        <br>
+        <li>
+            Minimum Length - Drop the read if it is below a specific length
+            <ul>
+                <li>The read is thrown away if the total length is below a specific number</li>
+                <li>Reads under a certian length could contain errors</li>
+            </ul>
+        </li>
+    </ul>
+</div>
+<br>
+
+<!--CHANGE THIS AREA FOR BBDUK OPTION SELECTION DETAILS-->
+<!--Will need to adjust the option values inside the javascript function  ShowDiv-->
 <select id = "target">
-        <option value="">Select Trimming Operation</option>
-        <option value="qTrim">Quality Trimming</option>
-        <option value="fTrim">Force Trimming</option>
-        <option value="SlidingWindow">Sliding Window</option>
-        <option value="qFiltering">Quality Filtering</option>
+    <option value="">Select Trimming Operation</option>
+    <option value="aTrim">Adaptor Trimming</option>
+    <option value="qTrim">Quality Trimming</option>
+    <option value="fTrim">Force Trimming</option>
+    <option value="qFilt">Quality filtering</option>
+    <option value="minLen">Minimum length of read</option>
 </select>
 
 <button class = "btn" id = "button" type = "button" onclick="showDiv()">
     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add Operation
 </button>
 
-<!-- 
-OPTIONS DIV, values in drop downlist correspond to the div they are adding
--->
+<%= bootstrap_form_for @bbduk do |f| %>
+<%= f.hidden_field :home_dir, value: @home %>
+<%= f.hidden_field :soft_dir, value: @soft %>
+<%= f.hidden_field :in_dir, value: @input %>
+<%= f.hidden_field :out_dir, value: @output %>
+
+<!--CHANGE THIS SECTION FOR EACH DIV OF TRIMMING OPTIONS-->
 
 <div id = "formDiv">
-
-    <div class = "option" id = "qTrim" style = "display:none;">
-        <p>Trim the read when its quality goes below an identified Phred score.
+    <div class = "option" id = "aTrim" style = "display:none;">
+        <p>Apply adaptor trimming to your reads. Enter the name of the reference file from relation to your home directory.
         
         <button type ="button" class = "btn-sm" id = "trash" onclick="removeOperation(this.parentElement)">
             <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
         </button>
+        <br>"adapters.fa" is used for both Illumina Truseq and Nextera adapters, Ex: "woo0024/software/bbmap/resources/adapters.fa"
         </p>
-        
         <div class = "form-inline">
-            <%= f.number_field :trimq, label: "Enter Phred score to trim to:" %>
+            <%= f.text_field :aTrim, label: "Name of reference file:", :size=>"50" %>
         </div>
     </div>
-    
-    <div class = "option" id = "fTrim" style = "display:none;">
-        <p>Identify the left most bases to trim, and/or enter the right most base to keep.
-        For the right side, if you enter 80, bases from 80 to the end will be trimmed. 
+    <div id="qTrim" style="display:none;" class="option">
+        <p>Quality trimming removes bases from reads with phred score lower than indicated quality.
         
         <button type ="button" class = "btn-sm" id = "trash" onclick="removeOperation(this.parentElement)">
             <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
         </button>
+        <br>Suggested phred score: 13.
         </p>
         
         <div class = "form-inline">
-            <%= f.number_field :ftl, label: "Bases to trim from the start of the read:" %>
-            <%= f.number_field :ftr, label: "Trim all bases after this base:" %>
+            <%= f.number_field :readQ, label: "Minimum Regional Quality: " %>
         </div>
     </div>
-    
-    <div class = "option" id = "qFiltering" style = "display:none;">
-        <p>This option will discard the reads with average quality below the Phred score identified.
-        
+    <div id="fTrim" style="display:none;" class="option">
+        <p><b>Force Trim:</b> Cut off X number of bases from the left and/or the remaining bases after the Xth base.
+        Leave the field blank to not apply any left or right trimming. 
         <button type ="button" class = "btn-sm" id = "trash" onclick="removeOperation(this.parentElement)">
             <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
         </button>
+        <br>Only use this trimming option if you have known problems with the start or end of all reads.
+        
         </p>
         
         <div class = "form-inline">
-            <%= f.number_field :maq, label: "Required average Phred score of read:" %>
+            <%= f.number_field :ftl, label: "Number of bases to cut from the start: " %>
+            <%= f.number_field :ftr, label: "Cut off end of read after this base: " %>
         </div>
+        
     </div>
     
+    <div id="qFilt" style="display:none;" class="option">
+        <p><b>Quality Filtering: </b>After trimming, reads with average quality below desired threshold will be discarded. 
+        <button type ="button" class = "btn-sm" id = "trash" onclick="removeOperation(this.parentElement)">
+            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+        </button>
+        <br>Enter minimum quality in phred score, suggested: 12.
+        </p>
+        
+        <div class = "form-inline">
+            <%= f.number_field :maq, label: "Minimum read quality: " %>
+        </div>
+        
+    </div>
     
-    <div id="SlidingWindow" style="display:none;">Hello from sliding window</div>
-
-</div><!-- End of Form Div -->
-
+    <div id="minLen" style="display:none;" class="option">
+        <p>Specifies the minimum length of a read to be kept.
+        <button type ="button" class = "btn-sm" id = "trash" onclick="removeOperation(this.parentElement)">
+            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+        </button>
+        <br>Suggested number of bases for a read to be kept depends on the orignal size of the read -- bp 200, min len >50. 
+        </p>
+        
+        <div class = "form-inline">
+            <%= f.number_field :minLen, label: "Required bases to keep a read after trimming: " %>
+        </div>
+        
+    </div>
+</div><!-- end of form div -->
 <hr>
+
+
+<div id = "read">
+    <h4>What type of read do you have? Single-end or Paired-end Reads</h4> <br>
+    <select id = "read_form" onchange="changeIn(this)">
+        <option value="Single">Single-end</option>
+        <option value="Paired">Paired-end</option>
+    </select>
+
+</div> 
+
+<div id = "single" style="display:block;">
+    <div id = "s_file">
+        <br>
+        <%= f.text_field :s_file, label: "Enter the file name of your single-end read, if you have multiple files to trim separate file names by a comma:" %>
+    </div>
+    
+    </br>
+</div>
+
+<div id = "paired" style="display:none;">
+
+    <div id = "p_file">
+        <br>
+        Enter the file name of your paired-end reads, if you have multiple files to trim separate file names by a comma. 
+        <%= f.text_field :p_file_R, label: "Right side file of the paired read:" %>
+        <%= f.text_field :p_file_L, label: "Left side file of a paired read:"%>
+    </div>
+    
+</div>  
+
+
 <center>
         <%= f.submit "Create" %>
     <% end %>
 </center>
+
 
 <script>
 
@@ -137,31 +205,61 @@ OPTIONS DIV, values in drop downlist correspond to the div they are adding
         form_div.style.display = "none";
     }
 
+    /*
+    Function changes displays for dropdown menu
+    Creates a clone of the orginal div above, changes the name of the div so that
+    it can be checked for when the button is clicked -- can't add same option twice
+    
+    Each dropdown element/div will have two variables in the function 
+    
+    elem--dropdown element selected inside add operation determines what was selected
+    
+    */
     function showDiv(){
         
         var elem = document.getElementById('target');
         
-        var qTrim_div = document.getElementById('qTrim');
+        var aTrim_div = document.getElementById('aTrim');
         
-        var qFilt_div = document.getElementById('qFiltering');
+        var qTrim_div = document.getElementById('qTrim');
         
         var fTrim_div = document.getElementById('fTrim');
         
-        var SlidWin_div = document.getElementById('SlidingWindow');
+        var qFilt_div = document.getElementById('qFilt');
         
-        if(elem.value == "qTrim"){
+        var minLen_div = document.getElementById('minLen');
+        
+        
+        if(elem.value == "aTrim"){
+            document.getElementById("bbduk_aTrim").value = '';
+            aTrim_div.style.display = aTrim_div.style.display == "none" ? "block" : "none";
+        }
+        else if(elem.value == "qTrim"){
+            document.getElementById("bbduk_readQ").value = '';
             qTrim_div.style.display = qTrim_div.style.display == "none" ? "block" : "none";
         }
-        else if(elem.value == "SlidingWindow"){
-            
-        }
         else if(elem.value == "fTrim"){
+            document.getElementById("bbduk_ftl").value = '';
+            document.getElementById("bbduk_ftr").value = '';
             fTrim_div.style.display = fTrim_div.style.display == "none" ? "block" : "none";
         }
-        else if(elem.value == "qFiltering"){
+        else if(elem.value == "qFilt"){
+            document.getElementById("bbduk_maq").value = '';
             qFilt_div.style.display = qFilt_div.style.display == "none" ? "block" : "none";
         }
+        else if(elem.value == "minLen"){
+            document.getElementById("bbduk_minLen").value = '';
+            minLen_div.style.display = minLen_div.style.display == "none" ? "block" : "none";
+        }
+        
     }
+    
+    function showHelp(){
+        var helpDiv = document.getElementById("optionInfo");
+        
+        helpDiv.style.display = helpDiv.style.display == "none" ? "block" : "none";
+    }
+    
     
     /*
     Function changes div display for single or paired end reads
@@ -174,49 +272,22 @@ OPTIONS DIV, values in drop downlist correspond to the div they are adding
         var paired_div = document.getElementById('paired');
         
         if(elem.value == "Single"){
+            document.getElementById("bbduk_p_file_R").value = '';
+            document.getElementById("bbduk_p_file_L").value = '';
             single_div.style = "display:block;";
             paired_div.style = "display:none;";
         }
         else if(elem.value == "Paired"){
+            document.getElementById("bbduk_s_file").value = '';
             single_div.style = "display:none;";
             paired_div.style = "display:block;";
         }
         else if(elem == "s_file"){
             document.getElementById('s_file').style = "display:block;";
-            document.getElementById('s_files').style = "display:none;";
-        }
-        else if(elem == "s_files"){
-            document.getElementById('s_file').style = "display:none;";
-            document.getElementById('s_files').style = "display:block;";
         }
         else if(elem == "p_file"){
             document.getElementById('p_file').style = "display:block;";
-            document.getElementById('p_files').style = "display:none;";
-        }
-        else if(elem == "p_files"){
-            document.getElementById('p_file').style = "display:none;";
-            document.getElementById('p_files').style = "display:block;";
         }
     }
 
-</script>
-        
-        
-</script>
-<script>
-    
-    var i = 1;
-    function addOperation(){
-        
-        var original = document.getElementById('operation');
-        
-        var clone = original.cloneNode(true);
-        
-        clone.id = "operation" + i++;
-        clone.style = "display:block;";
-        
-        original.parentNode.appendChild(clone);
-        //or use appendChild(clone);
-        
-    }
 </script>

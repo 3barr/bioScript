@@ -8,6 +8,7 @@ jumbo.style.display = 'block';
 
 var Pbar = document.getElementById('bar');
 Pbar.style.display = 'none';
+
 </script>
 
 <div class="page-content home narrow">
@@ -54,6 +55,7 @@ Pbar.style.display = 'none';
                 </br></br><b>Strengths:</b> No knowledge of the super computing properties are needed like node size or computational power.
                 </br><b>Weaknesses:</b> Must be executed on a computational node of the super computing system within the terminal.
                 </p>
+                <center><button type = "button" onclick="save_type('CMD')"><%=link_to "Generate CMD", pages_selection_path %></button></center>
             </div><!--end column1 -->
             
             <div class="col-md-6">
@@ -66,6 +68,7 @@ Pbar.style.display = 'none';
                 </br></br><b>Strengths:</b> Easily executed from a login node, has the ability to sit in a queue.
                 </br><b>Weaknesses:</b> Need to have knowledge of the super computing properties
                 </p>
+                <center><button type = "button" onclick="save_type('PBS')"><%=link_to "Generate PBS", pages_selection_path %></button></center>
             </div><!--end column2 -->
         </div><!--end row-->
         
@@ -84,4 +87,9 @@ Pbar.style.display = 'none';
         
     </div><!--end wrap -->
 </div> <!--End page-contnet-->
+<script>
+function save_type(product){
+    sessionStorage.setItem("product", product);
+}
+</script>
 

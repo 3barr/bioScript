@@ -34,11 +34,17 @@
     
 </div>
 
+<div id ="skip" style ="display:none;">
+    <center><button type = "button" id = "but1"><%=link_to "Choose different software tool", pages_selection_path %></button>
+    <button type = "button" id = "but2"><%=link_to "Next (software is already downloaded)", surveys_new_path %></button></center>
+</div>
+
 <!-- Download div if BBDuk is selected -->
 <div id = "BBdownload_div" style= "display:none;">
     
     <!-- page dynamically loads selected software and only shows how to download those programs --> 
     <H4>Now download BBDuk:</H4>
+    <center>PDF download of instructions can be found <%= link_to "HERE.", asset_path("BBDuk_guide.pdf"), download: '' %></center>
     <center><P> To do this you will need to start by downloading the whole suit of BBMap tools. The link to do that is found <a href = "https://sourceforge.net/projects/bbmap/files/?source=navbar" target = "_blank">Here.</a>
     </br>Once at the source forage site, select the most popular BBMap_(version).tar.gz file downloaded this week. 
     <%= image_tag("BBMap-Download_screenshot.png", style: "height:200px;width:auto%;") %>
@@ -54,6 +60,10 @@
     </br>This creates the subfolder named "bbmap" located in the software directory. In my example the directory location of the BBMap software is now <b>"woo0024/software/bbmap/"</b>
     </br>
     Now BBDuk has been installed, See the BBDuk installation page <a href = "https://jgi.doe.gov/data-and-tools/bbtools/bb-tools-user-guide/installation-guide/" target="_blank">Here</a> if more guidance is needed
+    
+    <!-- TRYING TO LOAD PDF FOR USER DOWNLOAD 
+    <#%= link_to "BBDuk download guide", "Homework9.pdf", :target => "_blank" %>
+    -->
     </P></center>
 
 
@@ -63,9 +73,23 @@
 <div id = "Tdownload_div" style= "display:none;">
     
     <!-- page dynamically loads selected software and only shows how to download those programs --> 
-    <H4>Now download Trimmomatic</H4>
+    <H4>Now download Trimmomatic:</H4>
+    <center>PDF download of instructions can be found <%= link_to "HERE.", asset_path("Trimmomatic_guide.pdf"), download: '' %></center>
+    <center><p>To do this, start by downloading the binary software package at the Trimmomatic link <a href = "http://www.usadellab.org/cms/?page=trimmomatic" target="_blank">Here.</a><br>
+    <%= image_tag("downloadTrimmo.png", style: "height:200px;width:auto%;") %>
+    <hr>
+    Then add the downloaded file to the software location in your super computing system
+    </br> Notice I have created a directory called software inside my Home directory called "woo0024"
+    <br>
+    <%= image_tag("TrimoLocation.png", style: "height:250px;width:auto%;") %>
+    <hr>
     
-    <p>>Link to the Trimmomatic software page can be found <a href = "http://www.usadellab.org/cms/?page=trimmomatic" target="_blank">Here.</a></p>
+    Enter a Linux terminal, in OSC OnDemand hit "Open in Terminal" button, and make sure you are in the directory of the Trimmomatic-(version).zip file.
+    <br>Then run the command "unzip Trimmomatic-(version).zip" replaceing the version number in the parentheses in my example I unpack Trimmomatic-0.36.zip.
+    <br>This creates a new folder called "Trimmomatic-0.36" which is now the location of the software package for the trimmomatic tool.
+    <br><%= image_tag("TrimoUnpack.png", style: "height:250px;width:auto%;") %>
+    
+    </p></center>
     
 </div>
 
@@ -74,6 +98,7 @@
     
     <!-- page dynamically loads selected software and only shows how to download those programs --> 
     <H4>Now download FastQC:</H4>
+    <center>PDF download of instructions can be found <%= link_to "HERE.", asset_path("FastQC_guide.pdf"), download: '' %></center>
 
     <center><p>Link to the FastQC software download file can be found <a href = "https://www.bioinformatics.babraham.ac.uk/projects/download.html#fastqc" target="_blank">Here.</a> 
     </br>
@@ -144,6 +169,7 @@
         var trimmomatic_div = document.getElementById("Tdownload_div");
         var FastQC_div = document.getElementById("Fdownload_div");
         
+        var skip_div = document.getElementById("skip");
         var button_div = document.getElementById("next_button");
         
         if(tool == "BBDuk"){
@@ -151,6 +177,7 @@
             
             pBar_select.style.backgroundColor = "#53c322";
             pBar_download.style.backgroundColor = "#ff1616";
+            skip_div.style.display = "block";
             
             if(fastQC == "yes"){
                 FastQC_div.style.display = "block";
@@ -166,6 +193,7 @@
             pBar_select.style.backgroundColor = "#53c322";
             pBar_download.style.backgroundColor = "#ff1616";
             
+            skip_div.style.display = "block";
             if(fastQC == "yes"){
                 FastQC_div.style.display = "block";
             }

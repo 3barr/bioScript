@@ -12,8 +12,6 @@
     
 </script>
 
-<% @survey.inspect %>
-
 
 <h3>Select trimming options and input data file names</h3>
 <hr>
@@ -48,14 +46,14 @@
             Crop read from start - Cut the specificed number of bases from the start of the read
             <ul>
                 <li>Length - The number of bases to cut from the start of the read</li>
-                <li>Use this if you know your read(s) have quality problems at the <b>Front</b> of their sequences</li>
+                <li>Use this if you know your read(s) have quality problems at the <b>front</b> of their sequences</li>
             </ul>
         </li>
         <br>
         <li>
             Minimum Length - Drop the read if it is below a specific length
             <ul>
-                <li>Read is thrown away if the total lenght is below a specific number</li>
+                <li>Read is thrown away if the total length is below a specific number</li>
                 <li>Reads under a certian length could contain errors</li>
             </ul>
         </li>
@@ -219,19 +217,25 @@
         
         
         if(elem.value == "leading"){
+            document.getElementById("trimmomatic_leadingQ").value = '';
             leading_div.style.display = leading_div.style.display == "none" ? "block" : "none";
         }
         else if(elem.value == "SlidingWindow"){
+            document.getElementById("trimmomatic_winSize").value = '';
+            document.getElementById("trimmomatic_winQuality").value = '';
             SlidWin_div.style.display = SlidWin_div.style.display == "none" ? "block" : "none";
         }
         else if(elem.value == "crop"){
+            document.getElementById("trimmomatic_cropLen").value = '';
             crop_div.style.display = crop_div.style.display == "none" ? "block" : "none";
         }
         else if(elem.value == "Hcrop"){
+            document.getElementById("trimmomatic_HcropLen").value = '';
             Hcrop_div.style.display = Hcrop_div.style.display == "none" ? "block" : "none";
         }
         else if(elem.value == "minLen"){
-           minLen_div.style.display = minLen_div.style.display == "none" ? "block" : "none";
+            document.getElementById("trimmomatic_minLen").value = '';
+            minLen_div.style.display = minLen_div.style.display == "none" ? "block" : "none";
         }
         
     }
@@ -254,10 +258,13 @@
         var paired_div = document.getElementById('paired');
         
         if(elem.value == "Single"){
+            document.getElementById("trimmomatic_p_file_R").value = '';
+            document.getElementById("trimmomatic_p_file_L").value = '';
             single_div.style = "display:block;";
             paired_div.style = "display:none;";
         }
         else if(elem.value == "Paired"){
+            document.getElementById("trimmomatic_s_file").value = '';
             single_div.style = "display:none;";
             paired_div.style = "display:block;";
         }

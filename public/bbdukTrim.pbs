@@ -1,0 +1,10 @@
+#PBS -N BBDukTrim
+#PBS -l walltime=5:00:00
+#PBS -l nodes=1:ppn=28
+#PBS -j oe
+cd $PBS_O_WORKDIR
+cp -r in soft home $TMPDIR
+cd $TMPDIR
+bbmap/bbduk.sh -Xmx20g in1 = ininputR1.fq, ininputR2.fq, ininputR3.fq, ininputR4.fq in2 = ininputL1.fq, ininputL2.fq, ininputL3.fq, ininputL4.fq out1 = out/output_R_1.fq, out/output_R_2.fq, out/output_R_3.fq, out/output_R_4.f out2 = out/output_L_1.fq, out/output_L_2.fq, out/output_L_3.fq, out/output_L_4.f
+ref=woo0024/software/bbmap/resources/adapters.fa ktrim=r tpe tbo 
+cp -r $TMPDIR $PBS_O_WORKDIR

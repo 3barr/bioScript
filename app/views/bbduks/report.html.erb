@@ -14,5 +14,156 @@
     
 </script>
 
+<!--https://github.com/BioInfoTools/BBMap/blob/master/sh/bbduk.sh
+INFORMATION ABOUT BBDUK TRIMMING FLAGS INPUT AND TOOLS -->
 
-<%= @bbduk.inspect %> 
+<h3>Command Generated for BBDuk:</h3>
+
+<% all_options = [@bbduk.aTrim, @bbduk.readQ, @bbduk.ftl, @bbduk.ftr, @bbduk.maq, @bbduk.minLen] %>
+<% optionName = ["ref", "trimq", "ftl", "ftr", "maq", "minlen"] %>
+
+<% options = Array.new %>
+
+<% i = 0 %>
+<% all_options.each do |o| %>
+    <% if o != "" %> <!--If option is not blank (inputted by user)-->
+        <% options.push(optionName[i]) %>
+    <% end %>
+    <% i = i +1%>
+<% end %>
+
+<!--Now options array is filled with the option tags for each variable entered by the user-->
+
+<% use = Array.new %>
+<% options.each do |o| %>
+    <% if o == "ref" %>
+        <% use.push("ref=#{@bbduk.aTrim}") %>
+        <% use.push("ktrim=r") %>
+        <% use.push("tpe tbo") %>
+    <% elsif o == "trimq" %>
+        <% use.push("qtrim=rl") %>
+        <% use.push("trimq=#{@bbduk.readQ}") %>
+    <% elsif o == "ftl" %>
+        <% use.push("ftl=#{@bbduk.ftl}") %>
+    <% elsif o == "ftr" %>
+        <% use.push("ftr=#{@bbduk.ftr}") %>
+    <% elsif o == "maq" %>
+        <% use.push("maq=#{@bbduk.maq}") %>
+    <% elsif o == "minlen" %>
+        <% use.push("minlen=#{@bbduk.minLen}")%>
+    <% end %> 
+<% end %> 
+
+<!--Determine input type-->
+<% all_inputs = [@bbduk.s_file, @bbduk.p_file_R, @bbduk.p_file_L] %>
+<% input = ""%>
+
+<% if all_inputs[0] != "" %>
+    <% size = all_inputs[0].split.size %>
+    <% inputA = all_inputs[0].split %>
+    <% input = "in =" %>
+    <% inputA.each do |x| %> 
+        <% input << " #{@bbduk.in_dir}#{x}" %>
+    <% end %>
+    
+    <% output = "out=" %>
+    <% size.times do |i| %>
+        <% output << " #{@bbduk.out_dir}/output#{i+1}.fq," %>
+        <% pbs_output << "output#{i+1}.fq" %>
+    <% end %>
+    <% output = output[0...-1] %> <!--Removes last comma from output strings-->
+
+<% elsif all_inputs[1] != "" && all_inputs[2] != "" %>
+    <% inputR = all_inputs[1].split %>
+    <% inputL = all_inputs[2].split %>
+    <% input1 = "in1 =" %>
+    <% input2 = "in2 =" %>
+    <% inputR.each do |x| %> 
+        <% input1 << " #{@bbduk.in_dir}#{x}" %>
+    <% end %>
+    <% inputL.each do |x| %> 
+        <% input2 << " #{@bbduk.in_dir}#{x}" %>
+    <% end %>
+    
+    <% input = "#{input1} #{input2}" %>
+
+    <% size = all_inputs[1].split.size %>
+    <% output1 = "out1 =" %>
+    <% output2 = "out2 =" %>
+    <% pbs_output1 = "out1 =" %>
+    <% pbs_output2 = "out2 =" %>
+    <% size.times do |i| %>
+        <% output1 << " #{@bbduk.out_dir}/output_R_#{i+1}.fq," %>
+        <% output2 << " #{@bbduk.out_dir}/output_L_#{i+1}.fq," %>
+        <% pbs_output1 << " output_R_#{i+1}.fq," %>
+        <% pbs_output2 << " output_L_#{i+1}.fq," %>
+    <% end %> 
+    <% output1 = output1[0...-1] %>
+    <% output2 = output2[0...-1] %>
+    <% pbs_output1 = output1[0...-1] %>
+    <% pbs_output2 = output2[0...-1] %>
+    <% output = output1 + " " + output2 %>
+    <% pbs_output = pbs_output1 + " " + pbs_output2 %>
+<% end %> 
+
+<!--PRINT COMMAND FOR BBDUK-->
+<br>
+<%= "#{@bbduk.soft_dir}bbduk.sh -Xmx20g #{input} #{output}" %>
+<% use.each do |x| %>
+    <%= x %>
+<% end %>
+
+<div id = "cmdDiv" style = "display:none;">
+    <hr>
+    <p>Run this command from the location in the directory you specified as home -- <%=@bbduk.home_dir %></p>
+</div>
+
+<% File.open("/users/PWOO0003/woo0024/awesim/dev/templateTest/public/bbdukTrim.pbs", 'w') do |f| %>
+    <% f.puts "#PBS -N BBDukTrim" %>
+    <% f.puts "#PBS -l walltime=5:00:00" %>
+    <% f.puts "#PBS -l nodes=1:ppn=28" %>
+    <% f.puts "#PBS -j oe" %>
+    <% f.puts "cd $PBS_O_WORKDIR" %>
+    <% f.puts "cp -r #{@bbduk.in_dir} #{@bbduk.soft_dir} #{@bbduk.home_dir} $TMPDIR" %>
+    <% f.puts "cd $TMPDIR" %>
+    <% f.puts "bbmap/bbduk.sh -Xmx20g #{input} #{pbs_output}" %>
+    <% use.each do |x| %>
+        <% f.print x + " " %>
+    <% end %>
+    <% f.puts "" %>
+    <% f.puts "cp -r $TMPDIR $PBS_O_WORKDIR" %>
+    
+<% end %>
+
+
+<div id = "pbsDiv" style = "display:none;">
+    <hr>
+    <center><button><%= link_to "Download PBS file", 'bbdukTrim.pbs', download: '' %></button></center>
+    <p>PBS file created to run the BBDuk command.
+    <br>Download this file and upload it to your super computing system then execute this file in your home directory -- 
+    <%=@bbduk.home_dir %>. The command 'qsub trimmomaticTrim.pbs' can be used to submit this trimming job.
+    </p>
+</div>
+
+
+<script>
+    window.onload = function(){
+        showPBS();
+    };
+    
+    function showPBS(){
+        var Pdiv = document.getElementById("pbsDiv");
+        var cDiv = document.getElementById("cmdDiv");
+        var product = sessionStorage.getItem("product");
+        
+        if(product == "PBS"){
+            Pdiv.style.display = "block";
+        }
+        else if(product == "CMD"){
+            cDiv.style.display = "block";
+        }
+        
+    }
+    
+</script>
+        
