@@ -1,7 +1,7 @@
-Erik Barroso
+## Developed by Erik Barroso
 BioScript application
 
-Application in sandbox development mode
+Application is currently in AweSim sandbox development mode
 
 Developed to generate trimming scripts for NGS data
 
@@ -11,8 +11,7 @@ Walks users through entire process from tool specific download steps to the fina
 Follows flow diagram below 
 ![bioscriptlayout](https://user-images.githubusercontent.com/19696661/39716017-19f0dfdc-51fd-11e8-8d51-96dd645143c3.png)
 
-## headings 
-Screen shots of application
+## Screen shots of application
 
 BioScript Home Screen
 ![homescreen](https://user-images.githubusercontent.com/19696661/39716073-4852ccb4-51fd-11e8-838d-052a548a63da.png)
