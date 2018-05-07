@@ -3,5 +3,5 @@
 #PBS -l nodes=1:ppn=28
 #PBS -j oe
 cd $PBS_O_WORKDIR
-cp -r    $TMPDIR
+cp -r woo0024/project1/ woo0024/software/ /users/PWOO0003/woo0024/ $TMPDIR
 cd $TMPDIR

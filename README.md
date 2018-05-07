@@ -18,4 +18,3 @@ BioScript Home Screen
 
 Download guide step
 ![downloadshot](https://user-images.githubusercontent.com/19696661/39716168-94b35966-51fd-11e8-9444-0f088ba7bbe4.jpg)
-

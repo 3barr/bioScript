@@ -67,6 +67,7 @@ INFORMATION ABOUT BBDUK TRIMMING FLAGS INPUT AND TOOLS -->
     <% end %>
     
     <% output = "out=" %>
+    <% pbs_output = "out=" %>
     <% size.times do |i| %>
         <% output << " #{@bbduk.out_dir}/output#{i+1}.fq," %>
         <% pbs_output << "output#{i+1}.fq" %>

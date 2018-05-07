@@ -23,20 +23,20 @@
         <%= f.hidden_field :tool, value: "BBDuk" %>
         
         <%= f.text_field :home_dir, label: "Home Directory:" %>
-        Home directory of your super computing system. Should contain software, data, and output directories. Ex: "/users/PWOO0003/woo0024/"
+        Home directory of your super computing system. Should contain software, data, and output directories. Ex: " /users/PWOO0003/woo0024/ "
         <br>In this example, the home directory would be woo0024 shown in the figure below as "Home"
         <br>
         <%= f.text_field :software_dir, label: "Software Directory:"%>
-        Location of the folder that contains the BBMap folder, following instructions from the Download Software step directory would be "/woo0024/software/"
+        Location of the folder that contains the BBMap folder, following instructions from the Download Software step directory would be " woo0024/software/ "
         <br>The figure below shows the software directory to be "Home/Software/"
         <br>
         <%= f.text_field :input_dir, label: "Data Directory:" %>
-        Location of data to be trimmed, directory points to the project folder holding all the files to be trimmed during this operation.
-        <br>From the figure of directory layout below the data directory would be "/Home/Data/Input/"
+        Location of data to be trimmed, directory points to the project folder holding all the files to be trimmed during this operation. ex: " woo0024/project1/ "
+        <br>From the figure of directory layout below the data directory would be "Home/Data/Input/"
         
         <br>
         <%= f.text_field :output_dir, label: "Output Directory:" %>
-        Location of the output data, folder created for this specific trimming operation.
+        Location of the output data, folder created for this specific trimming operation. ex: " woo0024/project1/output/ "
         <br>The figure below shows this folder resides inside the home directory, and is named "Home/Output/"
         <br>
         <center><%= f.submit "Add Directory Information" %></center>
@@ -52,22 +52,22 @@
         <%= f.hidden_field :tool, value: "Trimmomatic" %>
         
         <%= f.text_field :home_dir, label: "Home Directory:" %>
-        Home directory of your super computing system. Should contain software, data, and output directories. Ex: "/users/PWOO0003/woo0024/"
+        Home directory of your super computing system. Should contain software, data, and output directories. Ex: " /users/PWOO0003/woo0024/ "
         <br>In this example, the home directory would be woo0024 shown in the figure below as "Home"
-        <hr>
+        <br>
         <%= f.text_field :software_dir, label: "Software Directory:"%>
-        Location of the folder that contains the Trimmomatic folder, following instructions from the Download Software step directory would be "/woo0024/software/"
+        Location of the folder that contains the BBMap folder, following instructions from the Download Software step directory would be " woo0024/software/ "
         <br>The figure below shows the software directory to be "Home/Software/"
-        <hr>
+        <br>
         <%= f.text_field :input_dir, label: "Data Directory:" %>
-        Location of data to be trimmed, directory points to the project folder holding all the files to be trimmed during this operation.
-        <br>From the figure of directory layout below the data directory would be "/Home/Data/Input/"
+        Location of data to be trimmed, directory points to the project folder holding all the files to be trimmed during this operation. ex: " woo0024/project1/ "
+        <br>From the figure of directory layout below the data directory would be "Home/Data/Input/"
         
-        <hr>
+        <br>
         <%= f.text_field :output_dir, label: "Output Directory:" %>
-        Location of the output data, folder created for this specific trimming operation.
+        Location of the output data, folder created for this specific trimming operation. ex: " woo0024/project1/output "
         <br>The figure below shows this folder resides inside the home directory, and is named "Home/Output/"
-        <hr>
+        <br>
         <center><%= f.submit "Add Directory Information" %></center>
     <% end %>
 
