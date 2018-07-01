@@ -174,6 +174,7 @@ INFORMATION ABOUT BBDUK TRIMMING FLAGS INPUT AND TOOLS -->
     <div id = "s_file">
         <br>
         <%= f.text_field :s_file, label: "Enter the file name of your single-end read, if you have multiple files to trim separate file names by a comma:" %>
+        Ex: "inFileR1.fastq, inFileR2.fastq, inFileR3.fastq"
     </div>
     
     </br>
@@ -183,7 +184,8 @@ INFORMATION ABOUT BBDUK TRIMMING FLAGS INPUT AND TOOLS -->
 
     <div id = "p_file">
         <br>
-        Enter the file name of your paired-end reads, if you have multiple files to trim separate file names by a comma. 
+        Enter the file name of your paired-end reads, if you have multiple files to trim separate file names by a comma.
+        <br> Ex: "inFileR1.fastq, inFileR2.fastq, inFileR3.fastq"
         <%= f.text_field :p_file_R, label: "Right side file of the paired read:" %>
         <%= f.text_field :p_file_L, label: "Left side file of a paired read:"%>
     </div>

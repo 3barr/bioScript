@@ -3,8 +3,8 @@
 #PBS -l nodes=1:ppn=28
 #PBS -j oe
 cd $PBS_O_WORKDIR
-cp -r    $TMPDIR
+cp -r woo0024/project1/ woo0024/software/ /users/PWOO0003/woo0024/ $TMPDIR
 cd $TMPDIR
-bbmap/bbduk.sh -Xmx20g in = in1.fq, in2.fq, in3.fq out=output1.fqoutput2.fqoutput3.fq
-qtrim=rl trimq=14 
+bbmap/bbduk.sh -Xmx20g in = woo0024/project1/inFile1.fastq, woo0024/project1/inFile2.fastq, woo0024/project1/inFile3.fastq out=output1.fqoutput2.fqoutput3.fq
+ref=adapters.fa ktrim=r tpe tbo qtrim=rl trimq=13 maq=12 
 cp -r $TMPDIR $PBS_O_WORKDIR
