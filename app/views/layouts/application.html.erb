@@ -31,7 +31,7 @@
                     <li><%= link_to "Home", root_path %></li>
                     <li onclick="save_type('CMD')"><%= link_to "Generate CMD", pages_selection_path %></li>
                     <li onclick="save_type('PBS')"><%= link_to "Generate PBS", pages_selection_path %></li>
-                    <li><%= link_to "Help", pages_help_path %></li>
+                    <!--<li><#%= link_to "Help", pages_help_path %></li>-->
                 </ul>
             </div>
         </div>
@@ -112,16 +112,15 @@
   <%= yield %>
 
 </div><!-- /.container -->
-
-<footer class = "footer">
-  <div class="container">
-    <hr>
-        <p class="text-muted"><center>Created By: Erik Barroso, last updated: <%= Date.today.strftime("%B") %>, <%= Date.today.year %>
-          --  comments and suggestions to ebarroso18@wooster.edu </center></p>
-  </div>
-</footer>
-
 </body>
+
+<!--<footer class = "footer">
+    <hr>
+    <p class="text-muted"><center>Created By: Erik Barroso, last updated: <#%= Date.today.strftime("%B") %>, <#%= Date.today.year %>
+    --  comments and suggestions to ebarroso18@wooster.edu </center></p>
+</footer>
+-->
+
 </html>
 
 <script>
